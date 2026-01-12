@@ -1,0 +1,124 @@
+@import "../../../../styles/main.less";
+
+.offersWrapper {
+  margin-top: 24px;
+
+  .offersHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+      color: @ButtonPrimary;
+      border-bottom: 1px solid @ButtonPrimary;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: -0.28px;
+      text-transform: uppercase;
+    }
+  }
+
+  .offersDetails {
+    margin-top: 16px;
+    display: block;
+
+    .offersDetailsBlock+.offersDetailsBlock {
+      margin-top: 16px;
+    }
+
+    @media @mobile-up {
+      display: flex;
+      .column-gap(10px);
+
+      .offersDetailsBlock+.offersDetailsBlock {
+        margin-top: 0;
+      }
+    }
+
+    .offersDetailsBlock {
+      padding: 16px;
+      border-radius: 8px;
+      background: @ThemeAccent;
+      border: 1px solid var(--Overlay-Popup-Divider-Stroke, #e0e0e0);
+
+      @media @mobile-up {
+        width: 50%;
+      }
+
+      .bestPriceContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1 0 0;
+        align-self: stretch;
+        margin-bottom: 8px;
+
+        .bestPriceText {
+          color: @HeaderNav;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px;
+          letter-spacing: -0.32px;
+
+          .price {
+            color: @InformationText;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: -0.32px;
+          }
+        }
+      }
+
+      .offersDetailsBlockCode {
+        margin-bottom: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .offersDetailsBlockTitle {
+        margin-bottom: 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.mt16 {
+  @media @mobile {
+    margin-top: 16px;
+  }
+}
+
+.b4 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: @TextBody;
+  letter-spacing: -0.28px;
+}
+
+.sh4 {
+  color: @HeaderNav;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.28px;
+}
+
+.couponCode {
+  color: @HeaderNav;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

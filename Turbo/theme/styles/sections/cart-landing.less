@@ -1,0 +1,314 @@
+@import "../../styles/main.less";
+
+.cart {
+  @media @tablet {
+    padding: 0px;
+  }
+  padding: 0px 0px 24px;
+  @media @tablet-range {
+    padding: 24px !important;
+  }
+  @media @mobile-up {
+    padding: 24px 40px 24px;
+  }
+}
+
+.cartMainContainer {
+  background-color: @PageBackground;
+
+  .errContainer {
+    background-color: @ErrorBackground;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+
+    .errorIcon {
+      display: flex;
+      margin-inline-end: 14px;
+    }
+
+    .errMsg {
+      color: @ErrorText;
+      flex-grow: 1;
+      font-weight: 600;
+      font-size: 12px;
+      margin-inline-end: 14px;
+    }
+    @media @tablet {
+      border-radius: 0;
+    }
+  }
+
+  .cartWrapper {
+    display: flex;
+    gap: 1rem;
+    @media @tablet {
+      flex-direction: column;
+    }
+  }
+
+  .cartItemDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    .minCartContainer {
+      padding: 24px;
+      border: 1px solid @DividerStokes;
+      border-bottom: unset;
+      border-top: unset;
+      .minCartValidBox {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: @ErrorBackground;
+        border-radius: 4px;
+        color: @ErrorText;
+        &.notAcceptingOrder {
+          @media @tablet {
+            align-items: flex-start;
+            padding: 16px;
+          }
+          .errorIcon {
+            width: 22px;
+            height: 22px;
+            display: flex;
+          }
+          justify-content: unset;
+          gap: 4px;
+        }
+        .continueBtn {
+          cursor: pointer;
+          color: @ButtonLink;
+        }
+      }
+    }
+
+    .cartTitleContainer {
+      border: 1px solid @DividerStokes;
+      padding: 24px;
+      @media @tablet-range {
+        padding: 16px;
+      }
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-radius: 8px 8px 0px 0px;
+      @media @mobile {
+        padding: 16px;
+        border-width: 1px 0;
+      }
+      .shareCartTablet {
+        display: none;
+        @media @tablet {
+          display: block;
+        }
+      }
+      .bagDetailsContainer {
+        display: flex;
+        align-items: center;
+
+        .bagCountHeading {
+          color: @TextHeading;
+          line-height: 140%;
+          font-size: 18px;
+          font-weight: 600;
+          flex-shrink: 0;
+
+          @media @mobile {
+            font-size: 12px;
+          }
+        }
+        .bagCount {
+          color: @TextLabel;
+          line-height: 140%;
+          margin-inline-start: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          @media @mobile {
+            font-size: 12px;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+  .cartItemPriceSummaryDetails {
+    flex: 0 0 33.6%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .buttonLoader {
+      border-radius: 8px;
+
+      @media @tablet {
+        display: none;
+      }
+    }
+
+    .gstCardLoader {
+      border-radius: 8px;
+      height: 72px;
+
+      @media @tablet-range {
+        height: 56px;
+      }
+
+      @media @mobile {
+        height: 56px;
+      }
+    }
+
+    .priceSummaryLoginButton {
+      border-radius: @ButtonRadius;
+      background: @ButtonPrimary;
+      cursor: pointer;
+      text-transform: uppercase;
+      color: @ButtonSecondary;
+      width: 100%;
+      height: 48px;
+      border: none;
+      line-height: 140%;
+      padding: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .priceSummaryGuestButton {
+      cursor: pointer;
+      background: @ButtonPrimary;
+      border-radius: @ButtonRadius;
+      text-transform: uppercase;
+      color: @ButtonSecondary;
+      width: 100%;
+      height: 48px;
+      border: none;
+      line-height: 140%;
+      padding: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .priceSummaryLoginButton,
+    .priceSummaryGuestButton {
+      @media @tablet {
+        display: none;
+      }
+      &[disabled] {
+        color: #898a93;
+        cursor: default;
+      }
+    }
+    .shareCartDesktop {
+      @media @tablet {
+        display: none;
+      }
+    }
+    .checkoutContainer {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: @TextHeading;
+      padding: 24px;
+      line-height: 140%;
+      border-radius: 8px;
+      background: @PageBackground;
+      border: 1px solid @DividerStokes;
+
+      @media @tablet {
+        border-radius: 0px;
+        margin-top: 12px;
+      }
+      @media @mobile {
+        padding: 16px;
+      }
+      svg {
+        width: 24px;
+        height: 24px;
+        margin-inline-end: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .selected {
+    display: flex;
+  }
+}
+
+.loyaltyWrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--divider-color, #e0e0e0);
+}
+
+.loyaltyCard {
+  padding: 24px;
+  border-bottom: 1px solid var(--divider-color, #e0e0e0);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rewardsTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-heading, #1f1f1f);
+}
+
+.rewardsContainer {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  svg {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    cursor: pointer;
+  }
+}
+
+.loyaltyMainText {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-heading, #1f1f1f);
+  margin-bottom: 8px;
+}
+
+.loyaltySubText {
+  font-size: 14px;
+  color: var(--text-body, #4f4f4f);
+}
+
+.loyaltyPointsTitle {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 12px;
+}
+
+.loyaltyCheckbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent-color, #000);
+}
+
+.loyaltyPointsInfo {
+  font-size: 12px;
+  margin-left: 32px;
+  color: @SuccessText;
+}

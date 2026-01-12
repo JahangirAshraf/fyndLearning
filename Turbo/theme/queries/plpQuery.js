@@ -1,0 +1,465 @@
+export const PLP_PRODUCTS = `query products(
+  $search: String
+  $filterQuery: String
+  $enableFilter: Boolean
+  $sortOn: String
+  $first: Int
+  $pageNo: Int
+  $after: String
+  $pageType: String
+) {
+  products(
+    search: $search
+    filterQuery: $filterQuery
+    enableFilter: $enableFilter
+    sortOn: $sortOn
+    first: $first
+    pageNo: $pageNo
+    after: $after
+    pageType: $pageType
+  ) {
+    filters {
+      key {
+        display
+        kind
+        logo
+        name
+      }
+      values {
+        count
+        currency_code
+        currency_symbol
+        display
+        display_format
+        is_selected
+        max
+        min
+        query_format
+        selected_max
+        selected_min
+        value
+      }
+    }
+    sort_on {
+      display
+      is_selected
+      logo
+      name
+      value
+    }
+    page {
+      current
+      next_id
+      has_previous
+      has_next
+      item_total
+      type
+      size
+    }
+    items {
+      brand {
+        _custom_json
+        custom_config
+        description
+        name
+        uid
+        id
+      }
+      color
+      item_code
+      item_type
+      has_variant
+      uid
+      grouped_attributes {
+        title
+        details {
+          key
+          type
+          value
+        }
+      }
+      attributes
+      custom_config
+      media {
+        alt
+        type
+        url
+        meta {
+          source
+        }
+      }
+      custom_order {
+        is_custom_order
+        manufacturing_time
+        manufacturing_time_unit
+      }
+      custom_meta {
+        key
+        value
+      }
+      description
+      discount
+      highlights
+      image_nature
+      is_dependent
+      moq {
+        increment_unit
+        maximum
+        minimum
+      }
+      name
+      net_quantity {
+        unit
+        value
+      }
+      price {
+        effective {
+          currency_code
+          currency_symbol
+          max
+          min
+        }
+        marked {
+          currency_code
+          currency_symbol
+          max
+          min
+        }
+      }
+      product_group_tag
+      product_online_date
+      rating
+      rating_count
+      seo {
+        description
+        title
+      }
+      short_description
+      similars
+      slug
+      tags
+      teaser_tag
+      tryouts
+      type
+      action {
+        type
+        page {
+          params
+          query
+          type
+        }
+      }
+      categories {
+        _custom_json
+        custom_config
+        description
+        name
+        uid
+        id
+        action {
+          type
+          page {
+            params
+            query
+            type
+          }
+        }
+        logo {
+          alt
+          type
+          url
+          meta {
+            source
+          }
+        }
+      }
+      identifiers
+      sizes
+      sellable
+      variants {
+        display_type
+        header
+        key
+        total
+        items {
+          _custom_json
+          color
+          color_name
+          is_available
+          name
+          slug
+          uid
+          value
+          medias {
+            alt
+            type
+            url
+            meta {
+              source
+            }
+          }
+          action {
+            type
+            page {
+              params
+              query
+              type
+            }
+          }
+        }
+      }
+      country_of_origin
+      is_tryout
+      channel
+      slug
+      uid
+      sellable
+      teaser_tag
+      discount
+      name
+      product_online_date
+      sizes
+    }
+  }
+}`;
+
+export const GET_QUICK_VIEW_PRODUCT_DETAILS = `query($slug: String!)  {
+  product(slug: $slug) {
+    brand {
+      name
+      uid
+    }
+    color
+    item_code
+    item_type
+    has_variant
+    uid
+    custom_config
+    media {
+      alt
+      meta {
+        source
+      }
+      type
+      url
+    }
+    sizes {
+      discount
+      multi_size
+      sellable
+      size_chart {
+        description
+        headers {
+          col_1 {
+            convertable
+            value
+          }
+          col_2 {
+            convertable
+            value
+          }
+          col_3 {
+            convertable
+            value
+          }
+          col_4 {
+            convertable
+            value
+          }
+          col_5 {
+            convertable
+            value
+          }
+          col_6 {
+            convertable
+            value
+          }
+          col_7 {
+            convertable
+            value
+          }
+          col_8 {
+            convertable
+            value
+          }
+          col_9 {
+            convertable
+            value
+          }
+          col_10 {
+            convertable
+            value
+          }
+        }
+        image
+        size_tip
+        sizes {
+          col_1
+          col_2
+          col_3
+          col_4
+          col_5
+          col_6
+          col_7
+          col_8
+          col_9
+          col_10
+        }
+        title
+        unit
+      }
+      sizes:size_details {
+        dimension {
+          height
+          is_default
+          length
+          unit
+          width
+        }
+        display
+        is_available
+        quantity
+        seller_identifiers
+        value
+        weight {
+          is_default
+          shipping
+          unit
+        }
+      }
+      stores {
+        count
+      }
+      price {
+        effective {
+            currency_code
+            currency_symbol
+            max
+            min
+          }
+          marked {
+            currency_code
+            currency_symbol
+            max
+            min
+          }  
+      }
+    }
+    custom_order {
+      is_custom_order
+      manufacturing_time
+      manufacturing_time_unit
+    }
+    description
+    discount
+    moq {
+      increment_unit
+      maximum
+      minimum
+    }
+    name
+    net_quantity {
+      unit
+      value
+    }
+    price {
+      effective {
+        currency_code
+        currency_symbol
+        max
+        min
+      }
+      marked {
+        currency_code
+        currency_symbol
+        max
+        min
+      }
+    }
+    rating
+    rating_count
+    seo {
+      description
+      title
+    }
+    short_description
+    slug
+    type
+    variants {
+      display_type
+      header
+      items {
+        _custom_meta {
+          key
+          value
+        }
+        color
+        color_name
+        is_available
+        medias {
+          alt
+          type
+          url
+        }
+        name
+        slug
+        uid
+        value
+      }
+      key
+    }
+    action {
+      page {
+        params
+        query
+        type
+      }
+      type
+    }
+  }
+}`;
+
+export const BRAND_META = `query brand($slug: String!) {
+  brand(slug: $slug) {
+    description
+    logo {
+      alt
+      type
+      url
+    }
+    name
+    slug
+  }
+}
+`;
+
+export const CATEGORY_META = `query Category($slug: String!) {
+    category(slug: $slug) {
+        banners {
+            landscape {
+                alt
+                type
+                url
+            }
+            portrait {
+                alt
+                type
+                url
+                meta {
+                    source
+                }
+            }
+        }
+        logo {
+            alt
+            type
+            url
+            meta {
+                source
+            }
+        }
+        name
+        uid
+    }
+}
+`;

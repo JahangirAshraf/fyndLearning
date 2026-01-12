@@ -1,0 +1,202 @@
+@import "../../styles/main.less";
+
+.share-popup-overlay {
+  position: absolute;
+  top: 65px;
+  inset-inline-end: 0px;
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.09);
+  @media @tablet {
+    top: 100px;
+    inset-inline-end: 24px;
+  }
+  .upArrow {
+    position: absolute;
+    inset-inline-end: -10px;
+    top: -19px;
+    @media @mobile {
+      display: none;
+    }
+  }
+  @media @mobile {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    inset-inline-start: 0;
+    top: 0;
+    z-index: 99;
+  }
+}
+.overlay-share {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+}
+
+.share-popup {
+  box-shadow: 0px 4px 10px 0px #0000001a;
+  background-color: @color-white;
+  @media @mobile-up {
+    border-radius: 4px;
+  }
+
+  @media @mobile {
+    top: 44px;
+    inset-inline-end: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 340px;
+    border: 1px solid @ThemeAccentD3;
+    border-radius: 8px 8px 0 0 !important;
+  }
+  z-index: 2;
+  display: flex;
+  padding: 16px;
+  position: relative;
+
+  .icons {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    @media @mobile {
+      padding-top: 16px !important;
+      padding-inline-end: 16px !important;
+      padding-bottom: 0 !important;
+      padding-inline-start: 16px !important;
+    }
+
+    .iconWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      width: 60px;
+      min-width: 60px;
+      cursor: pointer;
+      &.moreApp {
+        @media @desktop {
+          display: none;
+        }
+      }
+
+      .desktopCopyIcon {
+        display: block;
+        @media @mobile {
+          display: none;
+        }
+      }
+      
+      .mobileCopyIcon {
+        display: none;
+        @media @mobile {
+          display: block;
+        }
+      }
+      .circleIconContainer {
+        padding: 3.9px;
+        border-radius: 84.24px;
+        background: var(--Theme-Background, #f3f3ed);
+      }
+
+      .iconContainer {
+        display: flex;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+      }
+
+      .iconName {
+        color: var(--Text-Secondary-Text, #9c9c9c);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: -0.24px;
+      }
+    }
+    @media @mobile {
+      padding: unset;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex-direction: row;
+      padding: 16px 16px 0 16px;
+    }
+  }
+  @media @mobile {
+    position: fixed;
+    bottom: 0;
+    top: unset;
+    inset-inline-start: 0;
+    width: 100%;
+    z-index: 6;
+    padding-bottom: 24px;
+    border: 0;
+  }
+  .popup-title {
+    display: none;
+    border-bottom: 1px solid var(--Overlay-Popup-Divider-Stroke, #e0e0e0);
+    background: var(--overlay-popup-dividers-dialog-background, #fff);
+    color: @ThemeAccentD5;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+
+    @media @mobile {
+      display: flex;
+      padding: 12px 16px;
+      border-radius: 16px 16px 0 0;
+    }
+    .close-icon {
+      width: 24px;
+      height: 24px;
+      display: none;
+      cursor: pointer;
+      @media @mobile {
+        display: inline-block;
+      }
+    }
+  }
+
+  .copy-input {
+    display: none;
+    width: 100%;
+    padding-top: 16px;
+
+    @media @mobile {
+      display: flex;
+      padding-top: 0px;
+    }
+    input {
+      height: 41px;
+      padding: 12px;
+      width: calc(100% - 92px);
+      background-color: @ThemeAccentD1;
+      color: @ThemeAccentD5;
+      border: 0;
+      @media @mobile {
+        font-size: 12px;
+      }
+    }
+    button {
+      width: 92px;
+      height: 41px;
+      padding: 12px;
+      font-weight: 600;
+      @media @mobile {
+        font-size: 12px;
+      }
+      color: @color-white;
+      background: @ButtonPrimary;
+      border: 0;
+      text-transform: uppercase;
+      &.white-btn {
+        color: @ButtonPrimary;
+        background: @color-white;
+        border: 1px solid #000;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.imageWrapper {
+  img {
+    transition: 300ms all cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.imageHoverEnabled {
+  img {
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.applicationBannerContainer {
+  position: relative;
+
+  .box-wrapper {
+    width: var(--box_width);
+    height: var(--box_height);
+    opacity: 0;
+    position: absolute;
+    inset-inline-start: var(--x_position);
+    top: var(--y_position);
+    cursor: pointer;
+    transform: translate(var(--x_offset), var(--y_offset));
+    [dir="rtl"] & {
+      transform: translate(calc(var(--x_offset) * -1), var(--y_offset));
+    }
+  }
+
+  .box-wrapper-visible {
+    background: red;
+    opacity: 0.5;
+  }
+}

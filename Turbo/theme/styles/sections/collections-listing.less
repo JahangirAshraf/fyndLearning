@@ -1,0 +1,130 @@
+@import "../main.less";
+
+.carouselBtn {
+  &[disabled] {
+    display: none;
+  }
+
+  @media @tablet {
+    display: none;
+  }
+}
+
+.collections__template {
+  .section-title-block {
+    text-align: center;
+    padding-inline: @SectionInlinePaddingMobile;
+    @media @mobile-up {
+      padding-inline: @SectionInlinePaddingTablet;
+    }
+    @media @desktop {
+      padding-inline: @SectionInlinePaddingDesktop;
+    }
+    .section-title {
+      color: @TextHeading;
+      margin-bottom: 8px;
+      @media @mobile-up {
+        margin-bottom: 8px;
+      }
+      @media @desktop {
+        margin-bottom: 16px;
+      }
+    }
+    .section-description {
+      color: @TextBody;
+      margin: 0 auto 32px;
+      font-size: 14px;
+      @media @desktop {
+        max-width: 590px;
+      }
+      @media @tablet {
+        font-size: 12px;
+        margin: 0 auto 24px;
+      }
+    }
+  }
+}
+
+.collectionGrid {
+  padding-inline: @SectionInlinePaddingMobile;
+  display: grid;
+  justify-content: center;
+  gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media @mobile-up {
+    padding-inline: @SectionInlinePaddingTablet;
+    gap: 24px 12px;
+    grid-template-columns: repeat(auto-fit, calc((100% - 24px) / 3));
+  }
+
+  @media @desktop {
+    padding-inline: @SectionInlinePaddingDesktop;
+    gap: 24px;
+    grid-template-columns: repeat(
+      auto-fit,
+      calc((100% - (24px * (var(--grid-columns) - 1))) / var(--grid-columns))
+    );
+  }
+}
+
+.defaultGrid {
+  @media @desktop {
+    --grid-columns: 3;
+  }
+}
+
+.collectionSlider {
+  --gap: 24px;
+  padding-inline: @SectionInlinePaddingDesktop;
+  @media @tablet {
+    --gap: 12px;
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    padding: 0;
+  }
+  .carouselBtn {
+    @media @tablet {
+      display: none;
+    }
+  }
+
+  .sliderItem {
+    padding-inline: calc(var(--gap) / 2);
+  }
+  &.singleItem {
+    @media @mobile {
+      padding-inline: @SectionInlinePaddingMobile;
+    }
+  }
+}
+
+.hideOnDesktop {
+  @media @desktop {
+    display: none;
+  }
+}
+.hideOnTablet {
+  @media @tablet {
+    --gap: 12px;
+    padding-inline: @SectionInlinePaddingTablet;
+    display: none;
+  }
+  @media @mobile {
+    padding: 0;
+  }
+  :global {
+    .slick-list {
+      margin: 0 calc(var(--gap) / 2 * -1);
+    }
+  }
+  .sliderItem {
+    padding-inline: calc(var(--gap) / 2);
+  }
+  &.singleItem {
+    @media @mobile {
+      padding-inline: @SectionInlinePaddingMobile;
+    }
+  }
+}

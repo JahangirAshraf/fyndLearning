@@ -1,0 +1,486 @@
+{
+  "pages": [
+    {
+      "value": "about-us",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "about-us"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "About Us"
+    },
+    {
+      "value": "account-locked",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Account Locked"
+    },
+    {
+      "value": "blog",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "blog"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Blog"
+    },
+    {
+      "value": "brands",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "brands"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Brands"
+    },
+    {
+      "value": "cart-landing",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "canvas": {
+            "value": "left_panel",
+            "label": "Left Panel"
+          },
+          "attributes": {
+            "page": "cart-landing"
+          }
+        },
+        {
+          "canvas": {
+            "value": "right_panel",
+            "label": "Right Panel"
+          },
+          "attributes": {
+            "page": "cart-landing"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Cart Landing"
+    },
+    {
+      "value": "categories",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "categories"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Categories"
+    },
+    {
+      "value": "collection-listing",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "collection-listing"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Collection Listing"
+    },
+    {
+      "value": "collections",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "collections"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Collections"
+    },
+    {
+      "value": "contact-us",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "contact-us"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Contact Us"
+    },
+    {
+      "value": "edit-profile",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Edit Profile"
+    },
+    {
+      "value": "faq",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Faq"
+    },
+    {
+      "value": "forgot-password",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Forgot Password"
+    },
+    {
+      "value": "home",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "home"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Home"
+    },
+    {
+      "value": "locate-us",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "locate-us"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Locate Us"
+    },
+    {
+      "value": "login",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "login"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Login"
+    },
+    {
+      "value": "order-status",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Order Status"
+    },
+    {
+      "value": "order-tracking-details",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "order-tracking-details"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Order Tracking Details"
+    },
+    {
+      "value": "order-tracking",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "order-tracking"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Order Tracking"
+    },
+    {
+      "value": "orders-list",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Orders List"
+    },
+    {
+      "value": "payment-link",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Payment Link"
+    },
+    {
+      "value": "policy",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Policy"
+    },
+    {
+      "value": "product-description",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "product-description"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Product Description"
+    },
+    {
+      "value": "product-listing",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "product-listing"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Product Listing"
+    },
+    {
+      "value": "profile-address",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Profile Address"
+    },
+    {
+      "value": "profile-details",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Profile Details"
+    },
+    {
+      "value": "refund-order",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Refund Order"
+    },
+    {
+      "value": "register",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "register"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Register"
+    },
+    {
+      "value": "request-reattempt",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Request Reattempt"
+    },
+    {
+      "value": "return-policy",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Return Policy"
+    },
+    {
+      "value": "set-password",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Set Password"
+    },
+    {
+      "value": "shared-cart",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Shared Cart"
+    },
+    {
+      "value": "shipment-details",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "attributes": {
+            "page": "shipment-details"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Shipment Details"
+    },
+    {
+      "value": "shipping-policy",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Shipping Policy"
+    },
+    {
+      "value": "single-page-checkout",
+      "props": [],
+      "sections": [],
+      "sections_meta": [
+        {
+          "canvas": {
+            "value": "left_panel",
+            "label": "Left Panel"
+          },
+          "attributes": {
+            "page": "single-page-checkout"
+          }
+        },
+        {
+          "canvas": {
+            "value": "right_panel",
+            "label": "Right Panel"
+          },
+          "attributes": {
+            "page": "single-page-checkout"
+          }
+        }
+      ],
+      "type": "system",
+      "text": "Single Page Checkout"
+    },
+    {
+      "value": "tnc",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Tnc"
+    },
+    {
+      "value": "verify-email-link",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Verify Email Link"
+    },
+    {
+      "value": "verify-email",
+      "props": [],
+      "sections": [],
+      "sections_meta": {},
+      "type": "system",
+      "text": "Verify Email"
+    },
+    {
+      "value": "wishlist",
+      "props": [
+        {
+          "type": "checkbox",
+          "id": "show_add_to_cart",
+          "label": "t:resource.pages.wishlist.show_add_to_cart",
+          "info": "t:resource.common.not_applicable_international_websites",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "card_cta_text",
+          "label": "t:resource.common.button_text",
+          "default": "t:resource.settings_schema.cart_and_button_configuration.add_to_cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "mandatory_pincode",
+          "label": "t:resource.common.mandatory_delivery_check",
+          "info": "t:resource.pages.wishlist.mandatory_delivery_check_info",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_single_size",
+          "label": "t:resource.common.hide_single_size",
+          "info": "t:resource.pages.wishlist.hide_single_size_info",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "preselect_size",
+          "label": "t:resource.common.preselect_size",
+          "info": "t:resource.pages.wishlist.preselect_size_info",
+          "default": false
+        }
+      ],
+      "sections": [],
+      "sections_meta": [],
+      "type": "system",
+      "text": "Wishlist"
+    },
+    {
+      "value": "c:::site-map",
+      "text": "Site Map",
+      "path": "c/site-map",
+      "props": [],
+      "sections": [],
+      "sections_meta": [],
+      "type": "custom"
+    }
+  ]
+}

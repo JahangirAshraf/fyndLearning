@@ -1,0 +1,176 @@
+@import "../styles/main.less";
+
+.nextArrowStyles {
+  right: 10px;
+  inset-inline-start: "unset";
+}
+.prevArrowStyles {
+  left: 10px;
+}
+
+.headingContainer {
+  text-align: center;
+  padding-inline: @SectionInlinePaddingDesktop;
+  @media @tablet {
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    padding-inline: @SectionInlinePaddingMobile;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+  line-height: normal;
+  @media @tablet {
+    margin-bottom: 8px;
+  }
+}
+.sectionDescription {
+  margin-bottom: 16px;
+}
+
+.stackLayout,
+.horizontalLayout {
+  background-color: var(--img-background-color);
+  padding: 16px;
+  @media @tablet {
+    padding: 12px 16px;
+  }
+  @media @mobile {
+    padding: 8px;
+  }
+}
+
+.stackLayout {
+  --col-gap: 12px;
+  --col-count: var(--item-count);
+  display: grid;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--col-gap);
+  grid-template-columns: repeat(
+    auto-fit,
+    calc(
+      (100% / var(--col-count)) -
+        (var(--col-gap) * (var(--col-count) - 1) / var(--col-count))
+    )
+  );
+  @media @mobile {
+    --col-gap: 8px;
+    --col-count: var(--item-count-mobile);
+  }
+}
+
+.horizontalLayout {
+  --gap: 12px;
+  @media @mobile {
+    --gap: 8px;
+  }
+  .carouselBtn {
+    @media @tablet {
+      display: none;
+    }
+  }
+  .horizontalItem {
+    padding: 0 calc(var(--gap) / 2);
+  }
+
+  .carouselItem {
+    @media @mobile-up {
+      flex: 0 0 calc(100% / var(--count-desktop, 1));
+    }
+
+    @media @mobile {
+      flex: 0 0 calc(100% / var(--count-mobile, 1));
+    }
+  }
+
+  .carouselArrows {
+    @media @tablet-extend {
+      display: none;
+    }
+
+    @media @tablet-extend-up {
+      display: var(--show-arrow);
+    }
+  }
+}
+
+.trustmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+  width: 100%;
+
+  .trustmarkImage {
+    max-width: 100px;
+    @media @tablet {
+      max-width: 48px;
+    }
+  }
+
+  .trustmarkData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: @TextHeading;
+    text-align: center;
+    @media @tablet {
+      gap: 4px;
+    }
+  }
+
+  .trustmarkHeading {
+    font-size: 20px;
+    line-height: normal;
+    letter-spacing: -0.4px;
+    text-transform: capitalize;
+    @media @tablet {
+      font-size: 8px;
+      letter-spacing: -0.16px;
+    }
+  }
+
+  .trustmarkDescription {
+    @media @desktop {
+      max-width: 180px;
+    }
+
+    @media @tablet {
+      font-size: 7px;
+      line-height: 9px;
+      letter-spacing: 0.14px;
+      padding-top: 4px;
+    }
+  }
+}
+
+.hideOnDesktop {
+  @media @desktop {
+    display: none;
+  }
+}
+
+.hideOnTablet {
+  @media @tablet {
+    display: none;
+  }
+}
+
+.hideOnMobile {
+  @media @mobile {
+    display: none;
+  }
+}
+
+.showOnMobile {
+  @media @mobile-up {
+    display: none;
+  }
+}

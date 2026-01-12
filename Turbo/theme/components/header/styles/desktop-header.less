@@ -1,0 +1,277 @@
+@import "../../../styles/main.less";
+
+.headerDesktop {
+  .firstRow {
+    display: flex;
+    padding: 7px 0;
+
+    .middle {
+      .logo,
+      a {
+        max-width: 294px;
+        max-height: 65px;
+      }
+    }
+
+    .left,
+    .right {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      &.dontShow {
+        display: none;
+      }
+    }
+
+    .right__icons {
+      justify-content: flex-end;
+      .column-gap(16px);
+      .navButton {
+        display: flex;
+        gap: 4px;
+        width: auto !important;
+        align-items: center;
+        span {
+          color: @TextHeading;
+          font-size: 14px;
+          width: max-content;
+          @media @tablet {
+            display: none;
+          }
+        }
+      }
+      .icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        color: @HeaderIcon;
+        // justify-content: center;
+      }
+
+      min-height: 55px;
+
+      &--bag,
+      &--wishlist {
+        & > div {
+          position: relative;
+
+          .count {
+            min-width: 16px;
+            min-height: 16px;
+            padding: 0 2px;
+            background-color: @HeaderIcon;
+            color: @HeaderBackground;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 10px;
+            .flex-center();
+            position: absolute;
+            inset-inline-end: 0;
+            top: 0;
+            transform: translate(50%, -50%);
+
+            [dir="rtl"] & {
+              transform: translate(-50%, -50%);
+            }
+          }
+        }
+      }
+
+      .labelSignin {
+        color: @HeaderNav;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .secondRow {
+    display: flex;
+    justify-content: center;
+    &.visiblityNone {
+      visibility: hidden;
+    }
+  }
+
+  &.layout_1,
+  &.layout_2,
+  &.layout_3 {
+    .firstRow {
+      &.increasePadding {
+        padding: 14px 0;
+      }
+      .left {
+        margin: 0 74px;
+        justify-content: center;
+      }
+
+      .middle {
+        order: -1;
+      }
+
+      .right {
+        flex: 0 1 auto;
+        padding: 0 8px;
+      }
+    }
+  }
+
+  &.layout_2 {
+    .firstRow {
+      .left {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  &.layout_3 {
+    .first-row {
+      .left {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  &.single {
+    &.layout_4 {
+      .firstRow {
+        .middle {
+          position: absolute;
+          top: 50%;
+          inset-inline-start: 50%;
+          transform: translate(-50%, -50%);
+
+          [dir="rtl"] & {
+            transform: translate(50%, -50%);
+          }
+        }
+      }
+    }
+
+    .firstRow {
+      @media @desktop {
+        padding: 15px 0;
+      }
+
+      .right__icons {
+        .column-gap(16px);
+
+        &--bag,
+        &--wishlist {
+          & > div .count {
+            width: 14px;
+            height: 14px;
+          }
+        }
+
+        &--bag {
+          & > div .count {
+            transform: translate(4px, 0px);
+
+            [dir="rtl"] & {
+              transform: translate(-4px, 0px);
+            }
+          }
+        }
+
+        &--wishlist {
+          & > div .count {
+            transform: translate(3px, -3px);
+
+            [dir="rtl"] & {
+              transform: translate(-3px, -3px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.double {
+    &.layout_2 {
+      .secondRow {
+        justify-content: flex-start;
+      }
+    }
+
+    &.layout_3 {
+      .secondRow {
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+.headerIcon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  fill: @HeaderIcon;
+}
+
+.singleRowIcon g > path {
+  fill: @HeaderIcon;
+}
+
+.alwaysOnSearch {
+  width: 100%;
+  max-width: 600px;
+  padding-inline-end: 24px;
+
+  .customSearchClass {
+    position: relative;
+    transform: scaleY(1) !important;
+    opacity: 1 !important;
+    transition: none !important;
+
+    .search__wrapper {
+      width: unset !important;
+    }
+  }
+
+  .customSearchWrapperClass {
+    width: unset;
+  }
+}
+
+.hyperlocalActionBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: @HeaderNav;
+  text-align: left;
+
+  &.hyperlocalSearchOn {
+    margin-inline-start: 24px;
+  }
+
+  .truckIcon {
+    font-size: 24px;
+    min-width: 24px;
+  }
+
+  .locationMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .deliveryPromise {
+    font-size: 14px;
+    font-weight: 500;
+    .text-line-clamp();
+  }
+
+  .deliveryAddress {
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 170px;
+    .text-line-clamp();
+
+    &.promiseAddress {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.24px;
+      color: @TextBody;
+    }
+  }
+}

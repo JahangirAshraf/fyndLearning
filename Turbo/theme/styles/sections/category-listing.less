@@ -1,0 +1,129 @@
+@import "../main.less";
+.nextArrowStyles {
+  right: 20px;
+  inset-inline-start: "unset";
+}
+.prevArrowStyles {
+  left: 20px;
+}
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  padding-inline: @SectionInlinePaddingDesktop;
+  margin-bottom: 32px;
+  @media @tablet {
+    gap: 8px;
+    padding-inline: @SectionInlinePaddingTablet;
+    margin-bottom: 24px;
+  }
+  @media @mobile {
+    padding-inline: @SectionInlinePaddingMobile;
+  }
+}
+
+.categoryGrid {
+  display: grid;
+  gap: 24px;
+  padding-inline: @SectionInlinePaddingDesktop;
+  grid-template-columns: repeat(var(--per_row), 1fr);
+  @media @tablet {
+    grid-template-columns: repeat(var(--brand-item), 1fr);
+    gap: 12px;
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    grid-template-columns: repeat(var(--per-row-mobile), 1fr);
+    padding-inline: @SectionInlinePaddingMobile;
+  }
+  .gridItem {
+    min-width: 0;
+  }
+  &.singleItem {
+    display: flex;
+    justify-content: center;
+    & > * {
+      flex: 0 1 calc(100% / var(--per_row));
+      @media @mobile {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.categoryListingSlider {
+  .carouselItem {
+    flex: 0 0 calc((100%) / var(--count-desktop, 1));
+
+    @media @tablet-strict {
+      flex: 0 0 calc(100% / 3);
+    }
+
+    @media @mobile {
+      flex: 0 0 calc((100% - 50px) / var(--count-mobile, 1));
+    }
+  }
+}
+
+.categorySlider {
+  --gap: 24px;
+  padding-inline: @SectionInlinePaddingDesktop;
+  @media @tablet {
+    --gap: 16px;
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    --gap: 12px;
+    padding: 0;
+  }
+  .carouselBtn {
+    @media @tablet {
+      display: none;
+    }
+  }
+  .sliderItem {
+    padding: 0 calc(var(--gap) / 2);
+  }
+  &.singleItem {
+    @media @mobile {
+      padding-inline: @SectionInlinePaddingMobile;
+    }
+  }
+}
+
+.gap-above-button {
+  text-align: center;
+  padding-top: 32px;
+  @media @tablet {
+    padding-top: 16px;
+  }
+  @media @mobile {
+    padding-top: 24px;
+  }
+}
+
+.sectionButton {
+  padding: 12px 20px;
+  display: inline-block;
+  border-radius: @ButtonRadius;
+}
+
+@media @desktop {
+  .hideOnDesktop {
+    display: none;
+  }
+}
+@media @tablet {
+  .hideOnDesktop {
+    display: none;
+  }
+}
+@media @mobile {
+  .hideOnMobile {
+    display: none;
+  }
+  .hideOnDesktop {
+    display: block;
+  }
+}

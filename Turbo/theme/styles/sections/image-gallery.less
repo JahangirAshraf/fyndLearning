@@ -1,0 +1,120 @@
+@import "../main.less";
+
+
+.titleBlock {
+  text-align: center;
+  padding-inline: @SectionInlinePaddingDesktop;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  @media @tablet {
+    padding-inline: @SectionInlinePaddingTablet;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  @media @mobile {
+    padding-inline: @SectionInlinePaddingMobile;
+  }
+}
+
+.imageGallery {
+  border-radius: var(--bd-radius, 0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black); //safari fix
+}
+
+.imageGrid {
+  --row-gap: 32px;
+  --col-gap: 24px;
+  --col-count: var(--item-count);
+  padding-inline: @SectionInlinePaddingDesktop;
+  display: grid;
+  gap: var(--row-gap) var(--col-gap);
+  grid-template-columns: repeat(
+    auto-fit,
+    calc(
+      (100% / var(--col-count)) -
+        (var(--col-gap) * (var(--col-count) - 1) / var(--col-count))
+    )
+  );
+  @media @tablet {
+    --row-gap: 24px;
+    --col-gap: 16px;
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    --row-gap: 14px;
+    --col-gap: 14px;
+    --col-count: var(--item-count-mobile);
+    padding-inline: @SectionInlinePaddingMobile;
+  }
+}
+
+.imageSlider {
+  --gap: 24px;
+  padding-inline: @SectionInlinePaddingDesktop;
+  @media @tablet {
+    --gap: 12px;
+    padding-inline: @SectionInlinePaddingTablet;
+  }
+  @media @mobile {
+    padding: 0;
+  }
+  .carouselBtn {
+    @media @tablet {
+      display: none;
+    }
+  }
+  :global {
+    .slick-list {
+      margin: 0 calc(var(--gap) / 2 * -1);
+    }
+  }
+  .sliderItem {
+    padding: 0 calc(var(--gap) / 2);
+  }
+  &.mobileItemLess {
+    @media @mobile {
+      padding-inline: @SectionInlinePaddingMobile;
+    }
+  }
+
+  .carouselItem {
+    flex: 0 0 calc(100% / var(--count-desktop, 1));
+
+    @media @mobile {
+      flex: 0 0 calc((100% - 50px) / var(--count-mobile, 1));
+    }
+  }
+  .carouselArrows {
+    display: var(--show-arrow);
+
+    @media @tablet {
+      display: none;
+    }
+  }
+}
+
+.hideOnDesktop {
+  @media @desktop {
+    display: none;
+  }
+}
+
+.hideOnTablet {
+  @media @tablet {
+    display: none;
+  }
+}
+
+.hideOnMobile {
+  @media @mobile {
+    display: none;
+  }
+}
+
+.showOnMobile {
+  @media @mobile-up {
+    display: none;
+  }
+}

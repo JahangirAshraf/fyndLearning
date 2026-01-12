@@ -1,0 +1,641 @@
+{
+  "props": [
+    {
+      "type": "font",
+      "id": "font_header",
+      "category": "t:resource.settings_schema.common.typography",
+      "default": false,
+      "label": "t:resource.settings_schema.typography.title_font"
+    },
+    {
+      "type": "font",
+      "id": "font_body",
+      "category": "t:resource.settings_schema.common.typography",
+      "default": false,
+      "label": "t:resource.settings_schema.typography.body_font"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_max_height",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.common.mobile_logo_max_height",
+      "min": 20,
+      "max": 100,
+      "unit": "px",
+      "default": 24,
+      "info": "t:resource.settings_schema.common.mobile_logo_max_height_info"
+    },
+    {
+      "type": "range",
+      "id": "desktop_logo_max_height",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.common.logo_header",
+      "min": 20,
+      "max": 100,
+      "unit": "px",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_max_height_header",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.common.mobile_logo_header",
+      "min": 20,
+      "max": 100,
+      "unit": "px",
+      "default": 38,
+      "info": "t:resource.settings_schema.common.mobile_logo_header_info"
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "default": "single",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.layout",
+      "options": [
+        {
+          "text": "t:resource.settings_schema.header.single_row_navigation",
+          "value": "single"
+        },
+        {
+          "text": "t:resource.settings_schema.header.double_row_navigation",
+          "value": "double"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "always_on_search",
+      "default": false,
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.always_on_search",
+      "info": "t:resource.settings_schema.header.one_click_search_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_header_on_checkout",
+      "default": false,
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.show_secondary_header_on_checkout",
+      "info": "t:resource.settings_schema.header.show_secondary_header_on_checkout_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_border",
+      "default": true,
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.show_border_on_desktop",
+      "info": "t:resource.settings_schema.header.show_border_on_desktop_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "default": true,
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.sticky_header",
+      "info": "t:resource.settings_schema.header.sticky_header_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon_text_in_header",
+      "default": false,
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.show_icon_text_in_header",
+      "info": "t:resource.settings_schema.header.show_icon_text_in_header_info"
+    },
+    {
+      "type": "text",
+      "id": "profile_icon_text",
+      "default": "",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.profile_icon_text_label",
+      "info": "t:resource.settings_schema.header.profile_icon_text_info"
+    },
+    {
+      "type": "text",
+      "id": "wishlist_icon_text",
+      "default": "",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.wishlist_icon_text_label",
+      "info": "t:resource.settings_schema.header.wishlist_icon_text_info"
+    },
+    {
+      "type": "text",
+      "id": "cart_icon_text",
+      "default": "",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.cart_icon_text_label",
+      "info": "t:resource.settings_schema.header.cart_icon_text_info"
+    },
+    {
+      "type": "select",
+      "id": "logo_menu_alignment",
+      "default": "layout_1",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.desktop_logo_menu_alignment",
+      "options": [
+        {
+          "text": "t:resource.settings_schema.header.logo_left_menu_center",
+          "value": "layout_1"
+        },
+        {
+          "text": "t:resource.settings_schema.header.logo_left_menu_left",
+          "value": "layout_2"
+        },
+        {
+          "text": "t:resource.settings_schema.header.logo_left_menu_right",
+          "value": "layout_3"
+        },
+        {
+          "text": "t:resource.settings_schema.header.logo_centre",
+          "value": "layout_4"
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "header_mega_menu",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.switch_to_mega_menu",
+      "info": "t:resource.settings_schema.header.mega_menu_double_row_required",
+      "default": "t:resource.common.default",
+      "options": [
+        {
+          "value": "t:resource.common.default",
+          "text": "t:resource.common.default_menu"
+        },
+        {
+          "value": "header_mega_menu",
+          "text": "t:resource.settings_schema.header.switch_to_mega_menu"
+        },
+        {
+          "value": "header_mega_menu_fullwidth",
+          "text": "t:resource.settings_schema.header.use_full_width_mega_menu",
+          "info": "t:resource.settings_schema.header.use_full_width_mega_menu_info"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "nav_weight",
+      "category": "t:resource.common.header",
+      "label": "t:resource.settings_schema.header.navigation_font_weight",
+      "info": "",
+      "default": "semibold",
+      "options": [
+        {
+          "value": "regular",
+          "text": "t:resource.settings_schema.header.regular"
+        },
+        {
+          "value": "semibold",
+          "text": "t:resource.settings_schema.header.semibold"
+        },
+        {
+          "value": "bold",
+          "text": "t:resource.settings_schema.header.bold"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "algolia_enabled",
+      "label": "t:resource.settings_schema.algolia_configuration.enable_algolia",
+      "default": false,
+      "info": "t:resource.settings_schema.algolia_configuration.enable_algolia",
+      "category": "t:resource.settings_schema.common.algolia_configuration"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "default": "",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.logo"
+    },
+    {
+      "type": "text",
+      "id": "footer_description",
+      "label": "t:resource.common.description",
+      "category": "t:resource.settings_schema.common.footer"
+    },
+    {
+      "type": "image_picker",
+      "id": "payments_logo",
+      "default": "",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.bottom_bar_image"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_image",
+      "default": false,
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.enable_footer_image"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_image_desktop",
+      "default": "",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_image_mobile",
+      "default": "",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.mobile_tablet"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapsible_footer_menu",
+      "default": false,
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.show_collapsible_footer_menu",
+      "info": "t:resource.settings_schema.footer.collapsible_footer_menu_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_contact_background",
+      "default": true,
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.show_footer_contact_details_background"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_open_same_tab",
+      "default": false,
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.open_same_tab",
+      "info": "t:resource.settings_schema.footer.open_same_tab_info"
+    },
+    {
+      "type": "text",
+      "id": "footer_social_text",
+      "default": "Social Media",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.social_media_text",
+      "info": "t:resource.settings_schema.footer.social_media_text_info"
+    },
+    {
+      "type": "range",
+      "id": "footer_logo_max_height_mobile",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.footer_logo_max_height_mobile",
+      "min": 25,
+      "max": 100,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "footer_logo_max_height_desktop",
+      "category": "t:resource.settings_schema.common.footer",
+      "label": "t:resource.settings_schema.footer.footer_logo_max_height_desktop",
+      "min": 36,
+      "max": 100,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "value": "Cart Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_cart",
+      "default": false,
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "label": "t:resource.settings_schema.cart_and_button_configuration.disable_cart",
+      "info": "t:resource.settings_schema.cart_and_button_configuration.disables_cart_and_checkout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "t:resource.settings_schema.cart_and_button_configuration.show_price",
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "default": true,
+      "info": "t:resource.settings_schema.cart_and_button_configuration.applies_to_product_pdp_featured_section"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "value": "Buy Button Configurations"
+    },
+    {
+      "type": "select",
+      "id": "button_options",
+      "label": "t:resource.settings_schema.cart_and_button_configuration.button_options",
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "default": "addtocart_buynow",
+      "info": "t:resource.settings_schema.cart_and_button_configuration.applicable_pdp_featured_product",
+      "options": [
+        {
+          "value": "addtocart_buynow",
+          "text": "t:resource.settings_schema.cart_and_button_configuration.add_to_cart_buy_now"
+        },
+        {
+          "value": "addtocart",
+          "text": "t:resource.settings_schema.cart_and_button_configuration.add_to_cart"
+        },
+        {
+          "value": "buynow",
+          "text": "t:resource.settings_schema.cart_and_button_configuration.buy_now"
+        },
+        {
+          "value": "none",
+          "text": "t:resource.settings_schema.cart_and_button_configuration.none"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity_control",
+      "label": "t:resource.settings_schema.cart_and_button_configuration.show_quantity_control",
+      "category": "t:resource.settings_schema.common.cart_and_button_configuration",
+      "default": false,
+      "info": "t:resource.settings_schema.cart_and_button_configuration.display_in_place_of_add_to_cart"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "value": "Product Card Aspect Ratio"
+    },
+    {
+      "type": "text",
+      "id": "product_img_width",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "default": "",
+      "label": "t:resource.settings_schema.product_card_configuration.width_in_px",
+      "info": "t:resource.settings_schema.product_card_configuration.default_aspect_ratio_limit"
+    },
+    {
+      "type": "text",
+      "id": "product_img_height",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "default": "",
+      "label": "t:resource.settings_schema.product_card_configuration.height_in_px",
+      "info": "t:resource.settings_schema.product_card_configuration.default_aspect_ratio_limit"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "default": true,
+      "label": "t:resource.settings_schema.product_card_configuration.display_sale_badge",
+      "info": "t:resource.settings_schema.product_card_configuration.hide_sale_badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_variants",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "default": false,
+      "label": "Display color variants",
+      "info": "Show color variant dots on product cards"
+    },
+    {
+      "type": "range",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 30,
+      "unit": "px",
+      "label": "t:resource.settings_schema.product_card_configuration.image_border_radius",
+      "default": 24,
+      "info": "t:resource.settings_schema.product_card_configuration.border_radius_for_image"
+    },
+    {
+      "type": "range",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "id": "badge_border_radius",
+      "min": 0,
+      "max": 30,
+      "unit": "px",
+      "label": "t:resource.settings_schema.product_card_configuration.badge_border_radius",
+      "default": 24,
+      "info": "t:resource.settings_schema.product_card_configuration.badge_border_radius_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "img_fill",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "default": false,
+      "label": "t:resource.common.fit_image_to_container",
+      "info": "t:resource.common.clip_image_to_fit_container"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_brand_name",
+      "category": "t:resource.settings_schema.common.product_details_modal_settings",
+      "label": "t:resource.settings_schema.product_details_modal_settings.hide_brand_name",
+      "info": "t:resource.settings_schema.product_details_modal_settings.hide_brand_name_info",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "img_container_bg",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "label": "t:resource.common.container_background_color",
+      "info": "t:resource.common.image_container_bg_color"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_on_hover",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "label": "t:resource.settings_schema.product_card_configuration.show_image_on_hover",
+      "info": "t:resource.settings_schema.product_card_configuration.hover_image_display",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limited_stock_quantity",
+      "category": "t:resource.settings_schema.common.product_card_configuration",
+      "min": 1,
+      "max": 100,
+      "unit": "",
+      "label": "t:resource.settings_schema.product_card_configuration.limited_stock_quantity",
+      "default": 11,
+      "info": "t:resource.settings_schema.product_card_configuration.limited_stock_quantity_info"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "value": "Improve Image Quality"
+    },
+    {
+      "type": "checkbox",
+      "id": "img_hd",
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "default": false,
+      "label": "t:resource.settings_schema.other_page_configuration.use_original_images",
+      "info": "t:resource.settings_schema.other_page_configuration.home_page_performance_impact"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "value": "Border Radius"
+    },
+    {
+      "type": "range",
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 30,
+      "unit": "px",
+      "label": "t:resource.settings_schema.other_page_configuration.button_border_radius",
+      "default": 4,
+      "info": "t:resource.settings_schema.other_page_configuration.border_radius_for_button"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "value": "Configure Max Page Width"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_page_max_width",
+      "default": false,
+      "category": "t:resource.settings_schema.common.other_page_configuration",
+      "label": "Enable Page Max Width",
+      "info": "Sets a maximum width of 1440px for better layout on wide screens"
+    },
+    {
+      "type": "header",
+      "category": "Delivery Promise",
+      "value": "Delivery Promise Format"
+    },
+    {
+      "type": "range",
+      "category": "Delivery Promise",
+      "id": "serviceability_max_min",
+      "min": 1,
+      "max": 60,
+      "unit": "minutes",
+      "label": "Show Delivery Promise in Minutes upto",
+      "default": 59,
+      "info": "If the delivery promise is under this value, it will be shown in minutes."
+    },
+    {
+      "type": "range",
+      "category": "Delivery Promise",
+      "id": "serviceability_max_hour",
+      "min": 1,
+      "max": 24,
+      "unit": "hours",
+      "label": "Show Delivery Promise in Hours upto",
+      "default": 2,
+      "info": "If the delivery promise is above selected minutes but under this value, it will be shown in hours."
+    },
+    {
+      "type": "checkbox",
+      "id": "is_serviceability",
+      "default": false,
+      "category": "Delivery Promise",
+      "label": "Serviceability check in header",
+      "info": "Allow users to enter location in header to check serviceability"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_serviceability_mandatory",
+      "category": "Delivery Promise",
+      "label": "Mandatory Serviceability check in Header",
+      "default": false,
+      "info": "Users must select a valid location to start browsing"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_delivery_promise",
+      "category": "Delivery Promise",
+      "label": "Show Delivery Promise in Header",
+      "default": false
+    },
+    {
+      "type": "radio",
+      "id": "delivery_promise_type",
+      "category": "Delivery Promise",
+      "default": "min",
+      "options": [
+        {
+          "value": "min",
+          "text": "Show Minimum delivery promise"
+        },
+        {
+          "value": "max",
+          "text": "Show Maximum delivery promise"
+        },
+        {
+          "value": "range",
+          "text": "Show Minimum to Maximum Range of delivery promise"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.google_maps",
+      "value": "Enable Google Maps & Places API in",
+      "info": "Enable address input and map display in Header or Cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_header_map",
+      "category": "t:resource.settings_schema.common.google_maps",
+      "default": false,
+      "label": "Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_checkout_map",
+      "category": "t:resource.settings_schema.common.google_maps",
+      "default": false,
+      "label": "Checkout"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_store_locator_map",
+      "category": "t:resource.settings_schema.common.google_maps",
+      "default": false,
+      "label": "Store Locator",
+      "info": "Enable Google Maps on the Store Locator page"
+    },
+    {
+      "type": "text",
+      "id": "map_api_key",
+      "category": "t:resource.settings_schema.common.google_maps",
+      "default": "",
+      "label": "t:resource.settings_schema.google_maps.google_maps_api_key",
+      "info": "t:resource.settings_schema.google_maps.google_maps_api_key_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_header",
+      "category": "t:resource.common.header",
+      "default": false,
+      "label": "t:resource.settings_schema.header.transparent_header",
+      "info": "t:resource.settings_schema.header.transparent_header_info"
+    },
+    {
+      "type": "header",
+      "category": "t:resource.settings_schema.common.copilot_configuration",
+      "value": "Copilot Configuration"
+    },
+    {
+      "type": "range",
+      "category": "t:resource.settings_schema.common.home_page",
+      "id": "initial_sections_count",
+      "label": "t:resource.settings_schema.home_page.initial_sections_count_label",
+      "min": 2,
+      "max": 4,
+      "default": 3,
+      "info": "t:resource.settings_schema.home_page.initial_sections_count_load_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "storefront_copilot_actions",
+      "default": false,
+      "category": "t:resource.settings_schema.common.copilot_configuration",
+      "label": "t:resource.settings_schema.copilot_configuration.storefront_copilot_actions",
+      "info": "t:resource.settings_schema.copilot_configuration.storefront_copilot_actions_info"
+    }
+  ]
+}

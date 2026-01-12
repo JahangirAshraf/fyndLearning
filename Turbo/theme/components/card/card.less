@@ -1,0 +1,94 @@
+@import "../../styles/main.less";
+
+.cardItem {
+  position: relative;
+  border-radius: @ImageRadius;
+  -webkit-mask-image: -webkit-radial-gradient(white, black); //safari fix
+
+  overflow: hidden;
+  &:hover {
+    .cardImg {
+      transform: scale(1.1);
+    }
+  }
+  .cardImg {
+    transition: 300ms transform cubic-bezier(0, 0, 0.2, 1);
+  }
+  .cardDesc {
+    padding: 7px 12px;
+    border-radius: @ButtonRadius;
+    justify-content: center;
+    border: 1px solid @ButtonPrimary;
+    background-color: @ButtonSecondary;
+    position: absolute;
+    bottom: 12px;
+    inset-inline-start: 12px;
+    inset-inline-end: 12px;
+    @media @desktop {
+      padding: 14px;
+      bottom: 24px;
+      inset-inline-start: 43px;
+      inset-inline-end: 43px;
+    }
+    .title {
+      text-transform: capitalize;
+      text-align: center;
+      .text-line-clamp();
+      color: @ButtonPrimary;
+    }
+  }
+  &.COLLECTIONS {
+    .cardDesc {
+      &:hover {
+        background-color: @ButtonPrimary;
+        .title {
+          color: @ButtonSecondary !important;
+        }
+      }
+    }
+  }
+  &.BRANDS {
+    .cardDesc {
+      justify-content: center;
+      .column-gap(16px);
+      border-radius: @ButtonRadius;
+      padding-top: 15px;
+      padding-inline-end: 27px;
+      padding-bottom: 15px;
+      padding-inline-start: 15px;
+      @media @desktop {
+        bottom: 12px;
+        inset-inline-start: 12px;
+        inset-inline-end: 12px;
+      }
+      .title {
+        // color: @TextHeading;
+        text-align: start;
+        @media @tablet-strict {
+          .text-line-clamp(2);
+        }
+      }
+      .cardLogo {
+        max-width: 33px;
+        @media @mobile {
+          max-width: 50px;
+        }
+      }
+    }
+  }
+}
+
+.imgWrapper {
+  position: static;
+  &::before {
+    content: unset;
+  }
+  & > * {
+    all: revert;
+  }
+}
+.fillImg {
+  img {
+    object-fit: cover;
+  }
+}

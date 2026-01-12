@@ -1,0 +1,528 @@
+@import "../.././../../styles/main.less";
+
+.productDetailsPage {
+  max-width: @page-width;
+}
+
+// Sale Tag Styles - Matching PLP sale badge colors
+
+.saleTagContainer {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
+  pointer-events: none; // Allow mouse events to pass through to image underneath
+}
+
+.saleTag {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 4px 10px;
+  background-color: @SaleBadgeBackground;
+  color: @SaleBadgeText;
+  border-radius: 30px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  pointer-events: none; // Allow mouse events to pass through to image underneath
+  z-index: 2;
+}
+
+.skeletonSaleTag {
+  min-width: 44px;
+  min-height: 24px;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  z-index: 2;
+  pointer-events: none; // Allow mouse events to pass through to image underneath
+}
+
+.wishlist {
+  position: absolute;
+  top: 25px;
+  inset-inline-end: 24px;
+  cursor: pointer;
+  width: 25px;
+  height: 23px;
+  z-index: 2;
+
+  .wishlistIcon {
+    &:hover {
+      /deep/ svg path {
+        fill: @TextHeading;
+        fill-opacity: 1;
+      }
+    }
+  }
+
+  .active {
+    /deep/ svg path {
+      fill: @TextHeading;
+      fill-opacity: 1;
+    }
+  }
+}
+.badge {
+  position: absolute;
+  text-align: center;
+  // z-index: 2;
+  bottom: 8px !important;
+  inset-inline-start: 8px !important;
+  top: unset !important;
+  inset-inline-start: unset !important;
+  padding: 4px var(--scale-8-px, 8px);
+  height: fit-content;
+  width: fit-content;
+  pointer-events: none; // Allow mouse events to pass through to image underneath
+}
+.b4 {
+  bottom: 8px !important;
+  inset-inline-start: 8px !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.28px;
+  border-radius: 24px;
+  background-color: @PageBackground;
+  color: @TextBody;
+  border: 1px solid @DividerStokes;
+}
+.galleryBox {
+  .imageBox {
+    position: relative;
+    width: 100%;
+    margin: 0 32px;
+    .aspect-ratio(@ProductImgAspectRatio);
+  }
+  .imageItem {
+    overflow: hidden;
+  }
+  .loader {
+    min-height: 100%;
+  }
+  .flexAlign {
+    display: flex;
+  }
+  .mouseCover {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    pointer-events: none;
+    display: none;
+  }
+
+  .imageGallery {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    @media @tablet {
+      display: none;
+    }
+
+    // For vertical-with-thumbnail layout, confine scroll within container
+    &.verticalWithThumbnailLayout {
+      height: 100vh;
+      overflow: hidden; // Prevent page scroll; inner container will scroll
+    }
+
+    img {
+      z-index: unset;
+    }
+
+    &__main {
+      max-width: 100%;
+      cursor: pointer;
+    }
+
+    // Vertical Image Layout Styles (Grid)
+    .verticalImageContainer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 100%;
+
+      .verticalImageItem {
+        position: relative;
+        width: 100%;
+        border-radius: @ImageRadius;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.2s ease-in-out,
+          box-shadow 0.2s ease-in-out;
+        aspect-ratio: @ProductImgAspectRatio;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .imageItem {
+          width: 100%;
+          height: 100%;
+          display: block;
+
+          // Maintain aspect ratio for images
+          .pdpImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+
+      // Responsive design for smaller screens
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    // Vertical with Thumbnail Layout Styles
+    .verticalWithThumbnailContainer {
+      display: flex;
+      gap: 32px; // Increased gap between thumbnail and main image columns
+      width: 100%;
+      max-width: 800px; // Limit maximum width
+      margin: 0 auto; // Center the container
+      align-items: flex-start; // Align items to the top
+      height: 100%; // Fill parent
+      min-height: 0; // allow child overflow scrolling in a flex container
+      overflow-y: auto; // Scroll inside this container only
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain; // Prevent scroll chaining to page
+      scroll-behavior: smooth; // Smooth programmatic scroll within container
+      scroll-snap-type: y proximity; // Enable soft snap between images
+      // Provide snap padding so first/last items can center-align
+      // when using block: 'center' with scrollIntoView and scroll-snap
+      scroll-padding-top: 50vh;
+      scroll-padding-bottom: 50vh;
+
+      // Thumbnail Sidebar
+      .thumbnailSidebar {
+        flex: 0 0 80px; // Fixed width
+        max-height: calc(100% - 40px); // Dynamic height based on container
+        overflow-y: auto; // Scrollable if needed
+        position: sticky; // Make sidebar sticky within container
+        top: 20px; // Distance from top when sticky
+        z-index: 10; // Ensure it stays above other content
+        align-self: flex-start; // Ensure it aligns to the top
+        overscroll-behavior: contain; // Prevent scroll chaining to page
+        scroll-behavior: smooth; // Smooth programmatic scroll in sidebar
+
+        .thumbnailListVertical {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .thumbnailItem {
+            position: relative;
+            width: 100%;
+            // aspect-ratio: 0.6; // More portrait-oriented (3:5 ratio - taller images)
+            border-radius: @ImageRadius;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+            flex-shrink: 0; // Prevent shrinking
+
+            &:hover {
+              border-color: @ButtonPrimary;
+              transform: scale(1.02);
+            }
+
+            &.activeThumbnail {
+              border-color: @ButtonPrimary;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            .thumbnailImage {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+
+            .thumbnailVideoContainer,
+            .thumbnail3DContainer {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: @PageBackground;
+
+              .videoPlayIcon,
+              .modelIcon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: var(--icon-color);
+                z-index: 2;
+              }
+
+              .modelIcon {
+                width: 16px;
+                height: 16px;
+              }
+
+              .videoPlayIcon {
+                width: 20px;
+                height: 20px;
+              }
+            }
+          }
+        }
+
+        // Custom scrollbar for thumbnail sidebar
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: @DividerStokes;
+          border-radius: 2px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: @TextBody;
+        }
+      }
+
+      // Main Images Vertical Line
+      .mainImagesArea {
+        .mainImagesVertical {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+
+          .mainImageItem {
+            position: relative;
+            width: 100%;
+            border-radius: @ImageRadius;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition:
+              transform 0.2s ease-in-out,
+              box-shadow 0.2s ease-in-out;
+            // aspect-ratio: 0.6; // More portrait-oriented (3:5 ratio - taller images)
+            max-height: 700px; // Increased max-height for taller portrait images
+            scroll-snap-align: center; // Snap each image toward the center when scrolling
+
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .imageItem {
+              width: 100%;
+              height: 100%;
+              display: block;
+
+              .pdpImage {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+          }
+        }
+      }
+
+      // Responsive design for mobile
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 16px;
+        max-width: 100%;
+        height: auto;
+        overflow: visible;
+
+        .thumbnailSidebar {
+          flex: none;
+          max-height: none;
+
+          .thumbnailListVertical {
+            flex-direction: row;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 8px;
+
+            .thumbnailItem {
+              flex: 0 0 60px;
+              width: 60px;
+              // aspect-ratio: 0.6; // More portrait-oriented for mobile too
+            }
+          }
+
+          // Hide scrollbar on mobile for horizontal scroll
+          &::-webkit-scrollbar {
+            display: none;
+          }
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .mainImagesArea {
+          width: 100%;
+          max-width: 100%;
+
+          .mainImagesVertical {
+            gap: 12px;
+          }
+        }
+      }
+    }
+
+    .thumbSlider {
+      display: flex;
+      justify-content: center;
+      margin-top: 18.5px;
+      padding: 0 40px;
+
+      .thumbWrapper {
+        position: relative;
+        width: 100%;
+        max-width: 365px;
+
+        .fitContent {
+          width: fit-content;
+        }
+
+        .btnNavGallery {
+          // z-index: @layer;
+          background-color: transparent;
+          cursor: pointer;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .nextBtn {
+          inset-inline-end: -39px;
+          [dir="rtl"] & {
+            transform: rotate(180deg);
+          }
+        }
+        .prevBtn {
+          inset-inline-start: -39px;
+          [dir="rtl"] & {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+    .thumbnailList {
+      display: flex;
+      gap: 8px;
+      overflow-x: scroll;
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge add Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      /* Firefox */
+
+      .thumbnail {
+        border: 2px solid transparent;
+        border-radius: @ImageRadius;
+        aspect-ratio: @ProductImgAspectRatio;
+        flex: 0 0 63px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        background: @ThemeAccentL3;
+        &.active {
+          border-color: @ButtonPrimary;
+        }
+      }
+
+      &--item {
+        width: 100%;
+        height: 100%;
+        display: flex;
+      }
+
+      .videoPlayIcon,
+      .modelIcon {
+        position: absolute;
+        top: 50%;
+        inset-inline-start: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--icon-color);
+      }
+
+      .modelIcon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .videoPlayIcon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+  .mobile {
+    display: none;
+
+    @media @tablet {
+      display: block;
+    }
+  }
+}
+
+.disableArrow {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.navArrowIcon {
+  width: 11px;
+  height: 18px;
+}
+
+.carouselArrow {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  [dir="rtl"] & {
+    transform: rotate(180deg);
+  }
+  rect:nth-of-type(1) {
+    fill: @PageBackground !important;
+  }
+  path {
+    fill: none;
+    stroke: @TextHeading;
+  }
+  &--left {
+    transform: rotate(180deg);
+    [dir="rtl"] & {
+      transform: unset;
+    }
+  }
+}
+
+.removeWidth {
+  width: unset !important;
+}
