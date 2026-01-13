@@ -1,6 +1,6 @@
-import React, { useRef, useState ,useEffect, useCallback, useMemo } from "react";
+import React, { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useGlobalStore, useGlobalTranslation ,useNavigate } from "fdk-core/utils";
+import { useGlobalStore, useGlobalTranslation, useNavigate } from "fdk-core/utils";
 import styles from "../styles/order-list.less";
 import useOrdersListing from "../page-layouts/orders/useOrdersListing";
 import OrdersHeader from "@gofynd/theme-template/components/order-header/order-header";
@@ -22,7 +22,7 @@ import useInternational from "../components/header/useInternational";
 import { ORDER_LISTING } from "../queries/ordersQuery";
 import { useAddressFormSchema, useSnackbar } from "../helper/hooks";
 import { usePolling } from "../helper/hooks/usePolling";
-import { detectMobileWidth } from "../helper/utils";import { getGroupedShipmentBags } from "../helper/utils";
+import { detectMobileWidth } from "../helper/utils"; import { getGroupedShipmentBags } from "../helper/utils";
 import { useThemeConfig } from "../helper/hooks";
 
 function OrdersList({ fpi }) {
@@ -48,6 +48,7 @@ function OrdersList({ fpi }) {
     isOpen: false,
     shipmentId: "",
   });
+
 
   const [isMobile, setIsMobile] = useState(true);
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ function OrdersList({ fpi }) {
           const countryInfo = response.data.country;
           setCountryInfo(countryInfo);
         }
-      } catch (error) {}
+      } catch (error) { }
     };
 
     handleCountryChange();
@@ -118,10 +119,10 @@ function OrdersList({ fpi }) {
         .filter(Boolean); // Remove null entries (i.e., empty groups)
     };
     const makeFieldsNonMandatory = (schema) => {
-     
+
       return schema?.map((group) => ({
         ...group,
-        
+
         fields: group.fields.map((field) => {
           if (nonEditableAddressFields?.includes(field.key)) {
             return {
@@ -133,7 +134,7 @@ function OrdersList({ fpi }) {
           if (requiredFieldsFromCountry?.includes(field.key)) {
             return { ...field, required: true };
           }
-          
+
           return {
             ...field,
             ...(field.key === "phone" ? { showAsOptional: false } : {}),
@@ -141,8 +142,8 @@ function OrdersList({ fpi }) {
         }),
       }));
     };
-   const makeSelectedKeysReadOnly = (schema) => {
-    
+    const makeSelectedKeysReadOnly = (schema) => {
+
       return schema?.map((group) => ({
         ...group,
         fields: group.fields.map((field) => {
@@ -178,7 +179,7 @@ function OrdersList({ fpi }) {
     //     }),
     //   }));
     // };
-     const filteredSchema = removeNameAndEmailFields(formSchema);
+    const filteredSchema = removeNameAndEmailFields(formSchema);
     const mappedSchema = makeFieldsNonMandatory(filteredSchema);
     const finalSchema = makeSelectedKeysReadOnly(mappedSchema);
     // const finalSchema = addEmailValidation(finalSchema1);
@@ -196,7 +197,7 @@ function OrdersList({ fpi }) {
       });
       const details = res?.data?.shipment?.detail;
       setSelectedShipmentIdDetails(details);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   // Fetch shipment details when a shipmentId is selected
@@ -212,11 +213,10 @@ function OrdersList({ fpi }) {
     const itemTotal = ordersList?.page?.item_total;
 
     if (itemTotal) {
-      return `(${itemTotal} ${
-        itemTotal === 1
-          ? t("resource.order.list.orders_count_singular_suffix")
-          : t("resource.order.list.orders_count_suffix")
-      })`;
+      return `(${itemTotal} ${itemTotal === 1
+        ? t("resource.order.list.orders_count_singular_suffix")
+        : t("resource.order.list.orders_count_suffix")
+        })`;
     } else {
       return "";
     }
@@ -225,7 +225,7 @@ function OrdersList({ fpi }) {
   const handleModalChange = ({ isOpen, shipmentId = null }) => {
     setModalState({ isOpen, shipmentId });
   };
-  
+
   const fetchOrders = useCallback(async () => {
     try {
       let values = {
@@ -236,7 +236,7 @@ function OrdersList({ fpi }) {
       const res = await fpi.executeGQL(ORDER_LISTING, values);
       const fetchedOrders = res?.data?.orders || {};
       setOrdersList({ ...fetchedOrders });
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   // Condition function to determine if polling should continue
@@ -284,7 +284,7 @@ function OrdersList({ fpi }) {
 
         if (!isRequired && updatedAddress.hasOwnProperty(key)) {
           if (updatedAddress[key] === "") {
-            updatedAddress[key]= "";
+            updatedAddress[key] = "";
           }
         }
       });
@@ -376,7 +376,7 @@ function OrdersList({ fpi }) {
         delivery_address: finalDeliveryAddress,
         delivery_reschedule_date:
           scheduleDate >
-          selectedShipmentIdDetails?.ndr_details?.allowed_delivery_window?.end_date
+            selectedShipmentIdDetails?.ndr_details?.allowed_delivery_window?.end_date
             ? selectedShipmentIdDetails?.ndr_details?.allowed_delivery_window?.end_date
             : scheduleDate,
         remark: additionalComments,

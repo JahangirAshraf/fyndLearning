@@ -7,6 +7,8 @@ const BlogSectionChunk = loadable(() => import(/* webpackChunkName:"BlogSectionC
 
 const BrandListingSectionChunk = loadable(() => import(/* webpackChunkName:"BrandListingSectionChunk" */ './brand-listing.jsx'));
 
+const BrandShowcaseSectionChunk = loadable(() => import(/* webpackChunkName:"BrandShowcaseSectionChunk" */ './brand-showcase.jsx'));
+
 const BrandsLandingSectionChunk = loadable(() => import(/* webpackChunkName:"BrandsLandingSectionChunk" */ './brands-landing.jsx'));
 
 const CartItemsSectionChunk = loadable(() => import(/* webpackChunkName:"CartItemsSectionChunk" */ './cart-items.jsx'));
@@ -82,6 +84,8 @@ const getbundle = (type) => {
             return (props) => <BlogSectionChunk {...props}/>;
         case 'brand-listing':
             return (props) => <BrandListingSectionChunk {...props}/>;
+        case 'brand-showcase':
+            return (props) => <BrandShowcaseSectionChunk {...props}/>;
         case 'brands-landing':
             return (props) => <BrandsLandingSectionChunk {...props}/>;
         case 'cart-items':
@@ -158,6 +162,7 @@ export default {
             'application-banner': { ...ApplicationBannerSectionChunk, Component: getbundle('application-banner') },
         'blog': { ...BlogSectionChunk, Component: getbundle('blog') },
         'brand-listing': { ...BrandListingSectionChunk, Component: getbundle('brand-listing') },
+        'brand-showcase': { ...BrandShowcaseSectionChunk, Component: getbundle('brand-showcase') },
         'brands-landing': { ...BrandsLandingSectionChunk, Component: getbundle('brands-landing') },
         'cart-items': { ...CartItemsSectionChunk, Component: getbundle('cart-items') },
         'cart-landing': { ...CartLandingSectionChunk, Component: getbundle('cart-landing') },

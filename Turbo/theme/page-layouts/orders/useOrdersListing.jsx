@@ -45,7 +45,7 @@ const useOrdersListing = (fpi) => {
               error: res?.errors?.length ? res?.errors[0]?.message : null,
               amount:
                 res?.data?.order?.breakup_values?.[
-                  res?.data?.order?.breakup_values?.length - 1
+                res?.data?.order?.breakup_values?.length - 1
                 ],
               orderId: params?.orderId,
             });
@@ -72,18 +72,19 @@ const useOrdersListing = (fpi) => {
         pageSize: 50,
       };
       const selected_date_filter =
-        queryParams.get("selected_date_filter") || "";
+        queryParams.get("selected_date_filter") || "730";
       if (selected_date_filter) {
         const dateObj = getDateRange(selected_date_filter);
         values = { ...values, ...dateObj };
       }
       const status = queryParams.get("status") || "";
       if (status) values.status = Number(status);
-
+      console.log("filters", selected_date_filter, status)
       fpi
         .executeGQL(ORDER_LISTING, values)
         .then((res) => {
           if (res?.data?.orders) {
+            console.log(res);
             const data = res?.data?.orders;
             setOrders(data);
           }
@@ -113,7 +114,7 @@ const useOrdersListing = (fpi) => {
         fpi.executeGQL(CART_ITEMS_COUNT, null).then((res) => {
           showSnackbar(
             translateDynamicLabel(outRes?.data?.addItemsToCart?.message, t) ||
-              t("resource.common.add_to_cart_success"),
+            t("resource.common.add_to_cart_success"),
             "success"
           );
         });
@@ -121,7 +122,7 @@ const useOrdersListing = (fpi) => {
       } else {
         showSnackbar(
           translateDynamicLabel(outRes?.data?.addItemsToCart?.message, t) ||
-            t("resource.common.add_cart_failure"),
+          t("resource.common.add_cart_failure"),
           "error"
         );
       }
