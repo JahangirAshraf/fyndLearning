@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { BlockRenderer } from "fdk-core/components";
 import ShipmentItem from "@gofynd/theme-template/components/shipment-item/shipment-item";
 import "@gofynd/theme-template/components/shipment-item/shipment-item.css";
@@ -24,8 +24,10 @@ import OrderDeliveryIcon from "../assets/images/order-delivery.svg";
 import CrossIcon from "../assets/images/cross-black.svg";
 import DefaultImage from "../assets/images/default-image.svg";
 import { detectMobileWidth } from "../helper/utils";
-import ScheduleIcon from "../../theme/assets/images/schedule.svg";import OrderPendingIcon from "../assets/images/order-pending.svg";
+import ScheduleIcon from "../assets/images/schedule.svg";
+import OrderPendingIcon from "../assets/images/order-pending.svg";
 import { getGroupedShipmentBags } from "../helper/utils";
+import useOrdersListing from "../page-layouts/orders/useOrdersListing";
 
 import "@gofynd/theme-template/components/core/modal/modal.css";
 
@@ -50,18 +52,43 @@ export function Component({ blocks, globalConfig, fpi }) {
   const { t } = useGlobalTranslation("translation");
   const navigate = useNavigate();
   const location = useLocation();
+  const params = useParams();
   const { fulfillment_option } = useGlobalStore(fpi.getters.APP_FEATURES);
+
+  // Hook for single shipment details (used for polling & specific shipment view)
   const {
-    isLoading,
+    isLoading: isShipmentLoading,
     shipmentDetails,
     invoiceDetails,
     getInvoice,
     showPolling,
     attempts,
   } = useShipmentDetails(fpi);
+
+  // Hook for full order details (contains multiple shipments)
+  // We pass the order_id from shipmentDetails if it's available (for shipment detail pages)
+  const {
+    isLoading: isOrderLoading,
+    orderShipments: parentOrderData,
+  } = useOrdersListing(fpi, shipmentDetails?.order_id);
+
+  // Decide which data to use: if orderId is in URL, we show the full order.
+  const isOrderView = !!params.orderId;
+  // We wait for shipment details, and if we have an order_id, we also wait for the full order data
+  const isLoading = isOrderView
+    ? isOrderLoading
+    : isShipmentLoading || (shipmentDetails?.order_id && isOrderLoading);
+
+  // Normalize the data into an array of shipments
+  // Prioritize parentOrderData shipments if available to show all shipments of the order
+  const shipmentsToDisplay = (parentOrderData?.shipments || []).length > 0
+    ? parentOrderData.shipments
+    : (shipmentDetails?.shipment_id ? [shipmentDetails] : []);
+
   const [initial, setInitial] = useState(true);
   const [show, setShow] = useState(false);
   const [selectId, setSelectId] = useState("");
+  const [activeShipment, setActiveShipment] = useState(null);
   const [goToLink, setGoToLink] = useState("");
   const [isMobile, setIsMobile] = useState(detectMobileWidth());
   useEffect(() => {
@@ -92,27 +119,25 @@ export function Component({ blocks, globalConfig, fpi }) {
     }
   }, [shipmentDetails?.shipment_id, shipmentDetails?.show_download_invoice]);
 
-  const {
-    bags: shipmentBags,
-    bundleGroups,
-    bundleGroupArticles,
-  } = useMemo(() => {
-    return getGroupedShipmentBags(shipmentDetails?.bags, {
-      isPartialCheck: !!(shipmentDetails?.can_return && !initial),
+  const getSlicedGroupedShipmentBags = (shipment) => {
+    const { bags: shipmentBags } = getGroupedShipmentBags(shipment?.bags, {
+      isPartialCheck: !!(shipment?.can_return && !initial),
     });
-  }, [shipmentDetails?.bags, shipmentDetails?.can_return, initial]);
-
-  const getSlicedGroupedShipmentBags = () => {
     return shipmentBags.slice(0, show ? shipmentBags.length : 1 * 2);
   };
 
-  const toggelInit = (item) => {
+  const toggelInit = (shipment, item) => {
+    setActiveShipment(shipment);
     setInitial(!initial);
     setGoToLink(item.link);
   };
 
   const goToReasons = () => {
-    if (shipmentDetails?.can_cancel || shipmentDetails?.can_return) {
+    const currentShipment =
+      isOrderView || parentOrderData?.shipments?.length > 0
+        ? activeShipment
+        : shipmentDetails;
+    if (currentShipment?.can_cancel || currentShipment?.can_return) {
       const querParams = new URLSearchParams(location.search);
       querParams.set("selectedBagId", selectId);
       navigate(
@@ -138,9 +163,9 @@ export function Component({ blocks, globalConfig, fpi }) {
   };
 
   const isVideo = (url) => /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url);
-  const ndrWindowExhausted = () => {
+  const ndrWindowExhausted = (shipment) => {
     const endDateStr =
-      shipmentDetails?.ndr_details?.allowed_delivery_window?.end_date;
+      shipment?.ndr_details?.allowed_delivery_window?.end_date;
     if (!endDateStr) return false;
 
     const endDate = new Date(endDateStr);
@@ -160,7 +185,7 @@ export function Component({ blocks, globalConfig, fpi }) {
     const date = new Date(utcString);
 
     // Use browser's local timezone with fallback to UTC
-   // const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    // const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 
     const options = {
       day: "2-digit",
@@ -204,318 +229,344 @@ export function Component({ blocks, globalConfig, fpi }) {
               <ShipmentPolling />
             </div>
           )}
-          {!shipmentDetails && !showPolling && !isLoading && (
-            <div className={`${styles.error}`}>
-              <EmptyState
-                title={t("resource.section.order.empty_state_title")}
-                description={t("resource.section.order.empty_state_desc")}
-                btnLink="/profile/orders"
-                btnTitle={t("resource.section.order.emptybtn_title")}
-              />
-            </div>
-          )}
+          {(!shipmentsToDisplay || shipmentsToDisplay.length === 0) &&
+            !showPolling &&
+            !isLoading && (
+              <div className={`${styles.error}`}>
+                <EmptyState
+                  title={t("resource.section.order.empty_state_title")}
+                  description={t("resource.section.order.empty_state_desc")}
+                  btnLink="/profile/orders"
+                  btnTitle={t("resource.section.order.emptybtn_title")}
+                />
+              </div>
+            )}
           <div>
-            {shipmentDetails && (
-              <div className={`${styles.shipmentWrapper}`}>
-                {blocks?.map((block, index) => {
-                  const key = `${block.type}_${index}`;
-                  switch (block.type) {
-                    case "order_header":
-                      return (
-                         <>
-                          <div className={`${styles.shipmentHeader}`} key={key}>
-                            <div className="flexCenter">
-                              <OrderDeliveryIcon />
-                            </div>
-                            <div className={styles.title}>
-                              {shipmentDetails?.shipment_id}
-                            </div>
-                          </div>
-                          {shipmentDetails?.shipment_status && (
-                            <div className={styles.reattemptButtonCont}>
-                              <div
-                                className={`${
-                                  shipmentDetails?.shipment_status?.value ===
-                                  "delivery_attempt_failed"
-                                    ? styles.errorStatus
-                                    : shipmentDetails?.shipment_status
-                                          ?.value ===
-                                        "delivery_reattempt_requested"
-                                      ? styles.info
-                                      : styles.status
-                                }`}
-                              >
-                                {shipmentDetails?.shipment_status.title}
+            {shipmentsToDisplay.map((shipmentDetails, sIndex) => {
+              const {
+                bags: groupedBags,
+                bundleGroups,
+                bundleGroupArticles,
+              } = getGroupedShipmentBags(shipmentDetails?.bags, {
+                isPartialCheck: !!(shipmentDetails?.can_return && !initial),
+              });
+              const shipmentBags = groupedBags.slice(0, show ? groupedBags.length : 1 * 2);
+
+              const shipmentBlocks = ["order_header", "shipment_items", "shipment_medias", "shipment_tracking"];
+
+              return (
+                <div
+                  className={`${styles.shipmentWrapper}`}
+                  key={shipmentDetails.shipment_id || sIndex}
+                >
+                  {blocks?.filter(block => shipmentBlocks.includes(block.type) || !["shipment_address", "payment_details_card", "shipment_breakup"].includes(block.type))
+                    .map((block, index) => {
+                      const key = `${block.type}_${sIndex}_${index}`;
+                      switch (block.type) {
+                        case "order_header":
+                          return (
+                            <>
+                              <div className={`${styles.shipmentHeader}`} key={key}>
+                                <div className="flexCenter">
+                                  <OrderDeliveryIcon />
+                                </div>
+                                <div className={styles.title}>
+                                  {shipmentDetails?.shipment_id}
+                                </div>
                               </div>
-                              <div className={styles.buttonContainer}>
-                                {shipmentDetails?.shipment_status?.value ==
-                                  "delivery_attempt_failed" &&
-                                  shipmentDetails?.ndr_details?.allowed_delivery_window
-                    ?.start_date  &&
-                  shipmentDetails?.ndr_details?.allowed_delivery_window
-                    ?.end_date &&
-                                  shipmentDetails?.ndr_details?.show_ndr_form ==
-                                    true &&
-                                  !ndrWindowExhausted() && (
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate(
-                                          `/reattempt/shipment/${shipmentDetails?.shipment_id}`
-                                        );
-                                      }}
-                                    >
-                                      REQUEST REATTEMPT
-                                    </button>
-                                  )}
-                                <div
-                                  className={`${styles.requestReattempt} ${
-                                    shipmentDetails?.shipment_status?.value ===
-                                    "delivery_reattempt_requested"
-                                      ? styles.deliveryReattemptRequested
-                                      : ""
-                                  }`}
-                                >
-                                  {shipmentDetails?.shipment_status?.value ==
-                                    "delivery_reattempt_requested" && (
+                              {shipmentDetails?.shipment_status && (
+                                <div className={styles.reattemptButtonCont}>
+                                  <div
+                                    className={`${shipmentDetails?.shipment_status?.value ===
+                                      "delivery_attempt_failed"
+                                      ? styles.errorStatus
+                                      : shipmentDetails?.shipment_status
+                                        ?.value ===
+                                        "delivery_reattempt_requested"
+                                        ? styles.info
+                                        : styles.status
+                                      }`}
+                                  >
+                                    {shipmentDetails?.shipment_status.title}
+                                  </div>
+                                  <div className={styles.buttonContainer}>
+                                    {shipmentDetails?.shipment_status?.value ==
+                                      "delivery_attempt_failed" &&
+                                      shipmentDetails?.ndr_details?.allowed_delivery_window
+                                        ?.start_date &&
+                                      shipmentDetails?.ndr_details?.allowed_delivery_window
+                                        ?.end_date &&
+                                      shipmentDetails?.ndr_details?.show_ndr_form ==
+                                      true &&
+                                      !ndrWindowExhausted(shipmentDetails) && (
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            navigate(
+                                              `/reattempt/shipment/${shipmentDetails?.shipment_id}`
+                                            );
+                                          }}
+                                        >
+                                          REQUEST REATTEMPT
+                                        </button>
+                                      )}
                                     <div
-                                      className={styles.scheduleIconContainer}
+                                      className={`${styles.requestReattempt} ${shipmentDetails?.shipment_status?.value ===
+                                        "delivery_reattempt_requested"
+                                        ? styles.deliveryReattemptRequested
+                                        : ""
+                                        }`}
                                     >
-                                      <div className={styles.scheduleIcon}>
-                                        {" "}
-                                        <ScheduleIcon />
-                                      </div>
-                                      <div className={styles.scheduleIconText}>
-                                        {shipmentDetails?.ndr_details
-                                          ?.delivery_scheduled_date &&
-                                          `Delivery Reattempt On ${formatUTCToDateString(shipmentDetails?.ndr_details?.delivery_scheduled_date)}`}
-                                      </div>
+                                      {shipmentDetails?.shipment_status?.value ==
+                                        "delivery_reattempt_requested" && (
+                                          <div
+                                            className={styles.scheduleIconContainer}
+                                          >
+                                            <div className={styles.scheduleIcon}>
+                                              {" "}
+                                              <ScheduleIcon />
+                                            </div>
+                                            <div className={styles.scheduleIconText}>
+                                              {shipmentDetails?.ndr_details
+                                                ?.delivery_scheduled_date &&
+                                                `Delivery Reattempt On ${formatUTCToDateString(shipmentDetails?.ndr_details?.delivery_scheduled_date)}`}
+                                            </div>
+                                          </div>
+                                        )}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </>
+                          );
+
+                        case "shipment_items":
+                          return (
+                            <React.Fragment key={key}>
+                              <div className={`${styles.shipmentBagItem}`}>
+                                {shipmentBags?.map(
+                                  (item, index) => (
+                                    <div
+                                      key={item.item.brand.name + index}
+                                    >
+                                      <ShipmentItem
+                                        key={item.item.brand.name + index}
+                                        bag={item}
+                                        bundleGroups={bundleGroups}
+                                        bundleGroupArticles={bundleGroupArticles}
+                                        initial={initial}
+                                        onChangeValue={onselectreason}
+                                        shipment={{
+                                          traking_no: shipmentDetails?.traking_no,
+                                          track_url: shipmentDetails?.track_url,
+                                        }}
+                                        deliveryAddress={
+                                          shipmentDetails?.delivery_address
+                                        }
+                                        selectId={selectId}
+                                        type="my-orders"
+                                        shipmentDetails={shipmentDetails}
+                                        globalConfig={globalConfig}
+                                      ></ShipmentItem>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                              {shipmentDetails?.bags?.length > 2 && (
+                                <div>
+                                  {!show && (
+                                    <div
+                                      className={`${styles.viewMore} `}
+                                      onClick={showMore}
+                                    >
+                                      {`+ ${shipmentBags.length - 2} ${t("resource.facets.view_more_lower")}`}
+                                    </div>
+                                  )}
+                                  {show && (
+                                    <div
+                                      className={`${styles.showLess} `}
+                                      onClick={showLess}
+                                    >
+                                      {t("resource.facets.view_less")}
                                     </div>
                                   )}
                                 </div>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      );
-
-                    case "shipment_items":
-                      return (
-                        <React.Fragment key={key}>
-                          <div className={`${styles.shipmentBagItem}`}>
-                            {getSlicedGroupedShipmentBags()?.map(
-                              (item, index) => (
-                                <div
-                                  key={item.item.brand.name + index}
-                                  // className={
-                                  //   !(item.can_cancel || item.can_return)
-                                  //     ? `${styles.updateDisable}`
-                                  //     : ""
-                                  // }
-                                >
-                                  <ShipmentItem
-                                    key={item.item.brand.name + index}
-                                    bag={item}
-                                    bundleGroups={bundleGroups}
-                                    bundleGroupArticles={bundleGroupArticles}
-                                    initial={initial}
-                                    onChangeValue={onselectreason}
-                                    shipment={{
-                                      traking_no: shipmentDetails?.traking_no,
-                                      track_url: shipmentDetails?.track_url,
-                                    }}
-                                    deliveryAddress={
-                                      shipmentDetails?.delivery_address
-                                    }
-                                    selectId={selectId}
-                                    type="my-orders"
-                                    shipmentDetails={shipmentDetails}
-                                    globalConfig={globalConfig}
-                                  ></ShipmentItem>
-                                </div>
-                              )
-                            )}
-                          </div>
-                          {shipmentBags.length > 2 && (
-                            <div>
-                              {!show && (
-                                <div
-                                  className={`${styles.viewMore} `}
-                                  onClick={showMore}
-                                >
-                                  {`+ ${shipmentBags.length - 2} ${t("resource.facets.view_more_lower")}`}
-                                </div>
                               )}
-                              {show && (
-                                <div
-                                  className={`${styles.showLess} `}
-                                  onClick={showLess}
-                                >
-                                  {t("resource.facets.view_less")}
+                            </React.Fragment>
+                          );
+
+                        case "shipment_medias":
+                          return (
+                            !!shipmentDetails?.return_meta?.images?.length && (
+                              <div className={styles.shipment} key={key}>
+                                <div className={styles.mediaPreview}>
+                                  <div className={styles.previewTitle}>
+                                    {t("resource.order.uploaded_media")}
+                                  </div>
+                                  <ul className={styles.fileList}>
+                                    {shipmentDetails.return_meta.images.map(
+                                      (file, index) => (
+                                        <li key={index} className={styles.fileItem}>
+                                          {isVideo(file.url) ? (
+                                            <div className={styles.videoContainer}>
+                                              <video
+                                                className={styles.uploadedImage}
+                                                src={file.url}
+                                                preload="metadata"
+                                                onClick={() => openMediaModal(file)}
+                                                onError={(e) => {
+                                                  e.target.style.display = "none";
+                                                  const img =
+                                                    document.createElement("img");
+                                                  img.src = DefaultImage;
+                                                  img.className =
+                                                    styles.uploadedImage;
+                                                  img.style.cursor = "pointer";
+                                                  img.onclick = () =>
+                                                    openMediaModal(file);
+                                                  e.target.parentNode.appendChild(
+                                                    img
+                                                  );
+                                                }}
+                                                disablePictureInPicture
+                                                aria-label={
+                                                  file.desc || `Video ${index + 1}`
+                                                }
+                                              >
+                                                <source
+                                                  src={file.url}
+                                                  type="video/mp4"
+                                                />
+                                                <source
+                                                  src={file.url}
+                                                  type="video/webm"
+                                                />
+                                                <source
+                                                  src={file.url}
+                                                  type="video/ogg"
+                                                />
+                                              </video>
+                                              <div className={styles.videoPlayIcon}>
+                                                <svg
+                                                  width="40"
+                                                  height="40"
+                                                  viewBox="0 0 48 48"
+                                                  fill="none"
+                                                  className={styles.playIcon}
+                                                >
+                                                  <circle
+                                                    cx="24"
+                                                    cy="24"
+                                                    r="24"
+                                                    fill="rgba(0,0,0,0.7)"
+                                                  />
+                                                  <path
+                                                    d="M18 12l18 12-18 12V12z"
+                                                    fill="white"
+                                                    transform="translate(-2, 0)"
+                                                  />
+                                                </svg>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            <img
+                                              className={styles.uploadedImage}
+                                              src={file.url}
+                                              alt={
+                                                file.desc || `Image ${index + 1}`
+                                              }
+                                              onClick={() => openMediaModal(file)}
+                                              onError={(e) => {
+                                                e.target.src = DefaultImage;
+                                              }}
+                                              style={{ cursor: "pointer" }}
+                                              loading="lazy"
+                                            />
+                                          )}
+                                        </li>
+                                      )
+                                    )}
+                                  </ul>
                                 </div>
-                              )}
-                            </div>
-                          )}
-                        </React.Fragment>
-                      );
-
-                    case "shipment_medias":
-                      return (
-                        !!shipmentDetails?.return_meta?.images?.length && (
-                          <div className={styles.shipment} key={key}>
-                            <div className={styles.mediaPreview}>
-                              <div className={styles.previewTitle}>
-                                {t("resource.order.uploaded_media")}
                               </div>
-                              <ul className={styles.fileList}>
-                                {shipmentDetails.return_meta.images.map(
-                                  (file, index) => (
-                                    <li key={index} className={styles.fileItem}>
-                                      {isVideo(file.url) ? (
-                                        <div className={styles.videoContainer}>
-                                          <video
-                                            className={styles.uploadedImage}
-                                            src={file.url}
-                                            preload="metadata"
-                                            onClick={() => openMediaModal(file)}
-                                            onError={(e) => {
-                                              e.target.style.display = "none";
-                                              const img =
-                                                document.createElement("img");
-                                              img.src = DefaultImage;
-                                              img.className =
-                                                styles.uploadedImage;
-                                              img.style.cursor = "pointer";
-                                              img.onclick = () =>
-                                                openMediaModal(file);
-                                              e.target.parentNode.appendChild(
-                                                img
-                                              );
-                                            }}
-                                            disablePictureInPicture
-                                            aria-label={
-                                              file.desc || `Video ${index + 1}`
-                                            }
-                                          >
-                                            <source
-                                              src={file.url}
-                                              type="video/mp4"
-                                            />
-                                            <source
-                                              src={file.url}
-                                              type="video/webm"
-                                            />
-                                            <source
-                                              src={file.url}
-                                              type="video/ogg"
-                                            />
-                                          </video>
-                                          <div className={styles.videoPlayIcon}>
-                                            <svg
-                                              width="40"
-                                              height="40"
-                                              viewBox="0 0 48 48"
-                                              fill="none"
-                                              className={styles.playIcon}
-                                            >
-                                              <circle
-                                                cx="24"
-                                                cy="24"
-                                                r="24"
-                                                fill="rgba(0,0,0,0.7)"
-                                              />
-                                              <path
-                                                d="M18 12l18 12-18 12V12z"
-                                                fill="white"
-                                                transform="translate(-2, 0)"
-                                              />
-                                            </svg>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <img
-                                          className={styles.uploadedImage}
-                                          src={file.url}
-                                          alt={
-                                            file.desc || `Image ${index + 1}`
-                                          }
-                                          onClick={() => openMediaModal(file)}
-                                          onError={(e) => {
-                                            e.target.src = DefaultImage;
-                                          }}
-                                          style={{ cursor: "pointer" }}
-                                          loading="lazy"
-                                        />
-                                      )}
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
-                          </div>
-                        )
-                      );
+                            )
+                          );
 
-                    case "shipment_tracking":
-                      return (
-                        initial && (
-                          <div
-                            className={`${styles.shipment} ${styles.shipmentTracking}`}
-                            key={key}
-                          >
-                            <ShipmentTracking
-                              tracking={shipmentDetails?.tracking_details}
-                              shipmentInfo={shipmentDetails}
-                              changeinit={toggelInit}
-                              invoiceDetails={invoiceDetails}
-                              bagLength={shipmentBags?.length}
-                              availableFOCount={fulfillment_option?.count || 1}
-                            ></ShipmentTracking>
-                          </div>
-                        )
-                      );
+                        case "shipment_tracking":
+                          return (
+                            initial && (
+                              <div
+                                className={`${styles.shipment} ${styles.shipmentTracking}`}
+                                key={key}
+                              >
+                                <ShipmentTracking
+                                  tracking={shipmentDetails?.tracking_details}
+                                  shipmentInfo={shipmentDetails}
+                                  changeinit={(item) => toggelInit(shipmentDetails, item)}
+                                  invoiceDetails={invoiceDetails}
+                                  bagLength={shipmentDetails?.bags?.length}
+                                  availableFOCount={fulfillment_option?.count || 1}
+                                ></ShipmentTracking>
+                              </div>
+                            )
+                          );
+                        case "shipment_address":
+                        case "payment_details_card":
+                        case "shipment_breakup":
+                          return null; // Handle separately outside loop
 
-                    case "shipment_address":
-                      return (
-                        initial && (
+                        default:
+                          return <BlockRenderer block={block} key={key} />;
+                      }
+                    })}
+                </div>
+              );
+            })}
+
+            {/* Render Order Summary Blocks once at the end */}
+            {initial && shipmentsToDisplay.length > 0 && (
+              <div className={styles.orderSummaryContainer}>
+                {blocks?.filter(block => ["shipment_address", "payment_details_card", "shipment_breakup"].includes(block.type))
+                  .map((block, index) => {
+                    const key = `summary_${block.type}_${index}`;
+                    const referenceShipment = shipmentsToDisplay[0];
+
+                    switch (block.type) {
+                      case "shipment_address":
+                        return (
                           <div className={`${styles.shipment}`} key={key}>
                             <ShipmentAddress
-                              address={shipmentDetails?.delivery_address}
+                              address={referenceShipment?.delivery_address}
                             ></ShipmentAddress>
                           </div>
-                        )
-                      );
+                        );
 
-                    case "payment_details_card":
-                      return (
-                        initial &&
-                        shipmentDetails?.payment_info?.length > 0 && (
-                          <div className={`${styles.shipment}`} key={key}>
-                            <PaymentDetailCard
-                              breakup={shipmentDetails?.breakup_values}
-                              paymentDetails={shipmentDetails?.payment_info}
-                            />
-                          </div>
-                        )
-                      );
+                      case "payment_details_card":
+                        return (
+                          referenceShipment?.payment_info?.length > 0 && (
+                            <div className={`${styles.shipment}`} key={key}>
+                              <PaymentDetailCard
+                                breakup={parentOrderData?.breakup_values || referenceShipment?.breakup_values}
+                                paymentDetails={referenceShipment?.payment_info}
+                              />
+                            </div>
+                          )
+                        );
 
-                    case "shipment_breakup":
-                      return (
-                        initial && (
+                      case "shipment_breakup":
+                        return (
                           <div className={`${styles.shipment}`} key={key}>
                             <ShipmentBreakup
                               fpi={fpi}
-                              breakup={shipmentDetails?.breakup_values}
-                              shipmentInfo={shipmentDetails}
+                              breakup={parentOrderData?.breakup_values || referenceShipment?.breakup_values}
+                              shipmentInfo={referenceShipment}
                             ></ShipmentBreakup>
                           </div>
-                        )
-                      );
-
-                    default:
-                      return <BlockRenderer block={block} key={key} />;
-                  }
-                })}
+                        );
+                      default:
+                        return null;
+                    }
+                  })}
               </div>
             )}
           </div>

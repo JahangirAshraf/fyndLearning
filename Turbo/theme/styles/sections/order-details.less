@@ -9,6 +9,7 @@
   justify-content: center;
   height: 100%;
   min-height: 75vh;
+
   .bold {
     font-size: 32px;
     line-height: 42px;
@@ -17,6 +18,7 @@
     letter-spacing: -0.02em;
     color: @TextHeading;
   }
+
   .continueShoppingBtn {
     display: flex;
     border: 1px solid @ButtonPrimary;
@@ -38,6 +40,7 @@
 .updateDisable {
   opacity: 0.4;
 }
+
 .viewMore,
 .showLess {
   text-align: center;
@@ -46,64 +49,139 @@
   cursor: pointer;
   color: @ButtonLink;
 }
+
 .shipmentWrapper {
+  margin-bottom: 40px;
+  padding: 24px;
+  border: 1px solid @DividerStokes;
+  border-radius: 8px;
+  background-color: @White;
+
   .shipmentHeader {
     width: 100%;
     display: flex;
     flex-direction: row;
-    text-align: center;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 12px;
 
-    img {
-      width: 40px;
-      height: 50px;
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: @TextHeading;
     }
+
     .status {
-      margin: auto;
-      text-align: center;
-      color: @White;
-      padding: 10px;
-      display: inline-flex;
-      border-radius: 3px;
-      font-size: 14px;
-      line-height: 14px;
+      margin-left: auto;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background-color: @DividerStokes;
+      color: @TextLabel;
+    }
+
+    .errorStatus {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .info {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .reattemptButtonCont {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed @DividerStokes;
+
+      .buttonContainer {
+        button {
+          background-color: @ButtonPrimary;
+          color: @White;
+          padding: 8px 16px;
+          border-radius: 4px;
+          border: none;
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 13px;
+        }
+      }
+
+      .requestReattempt {
+        .scheduleIconContainer {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: @TextLabel;
+          font-size: 13px;
+
+          .scheduleIcon {
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+      }
     }
   }
+
   .shipmentBagItem {
     width: 100%;
 
     position: relative;
+
     .bagItem {
       flex: 0 1 50%;
     }
+
     @media (max-width: 861px) {
       width: 100%;
       margin: 20px 0;
       flex-direction: column;
     }
+
     @media @mobile {
       width: 100%;
       margin: 20px 0;
       flex-direction: column;
     }
   }
+
   .shipment {
     border-radius: 3px;
     border: 1px solid @DividerStokes;
     margin: 20px 40px;
+
     @media @mobile {
       margin: 20px 0;
     }
   }
 }
+
+.orderSummaryContainer {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 2px solid @DividerStokes;
+}
+
 .btndiv {
   display: flex;
   justify-content: center;
+
   .updateBtns {
     width: 70%;
     display: flex;
     justify-content: center;
     margin-top: 32px;
     gap: 10px;
+
     @media @mobile {
       flex-wrap: wrap;
       gap: 0;
@@ -125,10 +203,12 @@
       color: #fff;
       background-color: @TextHeading;
       margin-inline-end: 10px;
+
       @media @mobile {
         margin-inline-end: 0;
       }
     }
+
     .cancelBtn {
       padding: 15px;
       border-radius: @ButtonRadius;
@@ -142,6 +222,7 @@
       color: @TextHeading;
       border: 1px solid @TextHeading;
     }
+
     .commonBtn {
       text-align: center;
       border-radius: @ButtonRadius;

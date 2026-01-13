@@ -9,10 +9,11 @@ import dayjs from "dayjs";
 import { useSnackbar, useThemeConfig } from "../../helper/hooks";
 import { translateDynamicLabel } from "../../helper/utils";
 
-const useOrdersListing = (fpi) => {
+const useOrdersListing = (fpi, manualOrderId) => {
   const { t } = useGlobalTranslation("translation");
   const location = useLocation();
   const params = useParams();
+  const orderId = manualOrderId || params?.orderId;
   const { showSnackbar } = useSnackbar();
   const { globalConfig, pageConfig } = useThemeConfig({ fpi, page: "orders" });
   const ORDERLIST = useGlobalStore(fpi.getters.SHIPMENTS);
@@ -30,11 +31,11 @@ const useOrdersListing = (fpi) => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      if (params?.orderId) {
+    if (orderId) {
+      setIsLoading(true);
+      try {
         const values = {
-          orderId: params?.orderId,
+          orderId: orderId,
         };
         fpi
           .executeGQL(ORDER_BY_ID, values)
@@ -47,23 +48,34 @@ const useOrdersListing = (fpi) => {
                 res?.data?.order?.breakup_values?.[
                 res?.data?.order?.breakup_values?.length - 1
                 ],
-              orderId: params?.orderId,
+              orderId: orderId,
             });
-            if (res?.errors[0]?.message) {
+            if (res?.errors?.[0]?.message) {
               showSnackbar(res?.errors[0]?.message, "error");
             }
           })
           .finally(() => {
             setIsLoading(false);
           });
+      } catch (error) {
+        console.log({ error });
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.log({ error });
+    } else if (!params?.shipmentId) {
+      // If no orderId and not on a shipment detail page, listing hook will handle loading
+    } else {
+      // If on shipment detail page and no orderId yet, we stop this hook's loading
+      // as it will restart once orderId is passed from parent
       setIsLoading(false);
     }
-  }, [params?.orderId]);
+  }, [orderId, params?.shipmentId]);
 
   useEffect(() => {
+    // Only fetch order listing if not on a detail page
+    if (orderId || params?.shipmentId) {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     try {
       const queryParams = new URLSearchParams(location.search);
@@ -71,8 +83,7 @@ const useOrdersListing = (fpi) => {
         pageNo: 1,
         pageSize: 50,
       };
-      const selected_date_filter =
-        queryParams.get("selected_date_filter") || "730";
+      const selected_date_filter = queryParams.get("selected_date_filter");
       if (selected_date_filter) {
         const dateObj = getDateRange(selected_date_filter);
         values = { ...values, ...dateObj };
@@ -96,7 +107,7 @@ const useOrdersListing = (fpi) => {
       console.log({ error });
       setIsLoading(false);
     }
-  }, [location.search]);
+  }, [location.search, orderId, params?.shipmentId]);
 
   const handelBuyAgain = (orderInfo) => {
     const itemsPayload = orderInfo?.bags_for_reorder?.map(

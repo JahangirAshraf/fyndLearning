@@ -169,6 +169,40 @@ export const ORDER_LISTING = `query orders(
           mobile
           name
         }
+        delivery_address {
+          address
+          address1
+          address2
+          address_category
+          address_type
+          area
+          city
+          contact_person
+          country
+          country_iso_code
+          country_phone_code
+          created_at
+          email
+          landmark
+          latitude
+          longitude
+          name
+          phone
+          pincode
+          state
+          updated_at
+          version
+          display_address
+        }
+        payment_info {
+          display_name
+          logo
+          mode
+          mop
+          payment_mode
+          status
+          amount
+        }
       }
       bags_for_reorder {
           item_id
@@ -339,6 +373,40 @@ export const ORDER_BY_ID = `query order($orderId: String!) {
         last_name
         mobile
         name
+      }
+      delivery_address {
+        address
+        address1
+        address2
+        address_category
+        address_type
+        area
+        city
+        contact_person
+        country
+        country_iso_code
+        country_phone_code
+        created_at
+        email
+        landmark
+        latitude
+        longitude
+        name
+        phone
+        pincode
+        state
+        updated_at
+        version
+        display_address
+      }
+      payment_info {
+        display_name
+        logo
+        mode
+        mop
+        payment_mode
+        status
+        amount
       }
     }
     total_shipments_in_order
