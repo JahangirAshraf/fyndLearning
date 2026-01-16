@@ -725,7 +725,7 @@ export const COMPLETE_MEDIA_UPLOAD = `mutation CompleteUpload($completeUploadReq
   }
 }`;
 
-export const DELIVERY_REQUEST_REATTEMPT=`mutation submitDeliveryReattemptRequest(
+export const DELIVERY_REQUEST_REATTEMPT = `mutation submitDeliveryReattemptRequest(
   $shipmentId: String!
   $deliveryReattemptRequestInput: DeliveryReattemptRequestInput
 ) {

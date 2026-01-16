@@ -9,6 +9,8 @@ import {
 import { LOCALITY } from "../../queries/logisticsQuery";
 import { useSnackbar } from "./hooks";
 import { capitalize } from "../utils";
+import { deduplicatedFetch } from "../api-deduplicator";
+
 export const useAddress = ({ fpi }) => {
   const { t } = useGlobalTranslation("translation");
   const { showSnackbar } = useSnackbar();
@@ -64,7 +66,7 @@ export const useAddress = ({ fpi }) => {
   };
 
   const fetchAddresses = () => {
-    return fpi.executeGQL(ADDRESS_LIST);
+    return deduplicatedFetch(fpi, ADDRESS_LIST);
   };
 
   const addAddress = (obj) => {

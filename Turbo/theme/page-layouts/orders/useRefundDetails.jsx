@@ -84,6 +84,7 @@ const useRefundDetails = (fpi) => {
         addBeneficiaryDetailsRequestInput: details,
       };
       return fpi.executeGQL(ADD_BENEFICIARY_DETAILS, values).then((res) => {
+        console.log("Result", { res });
         if (res?.data?.addBeneficiaryDetails) {
           const data = res?.data?.addBeneficiaryDetails;
           setBeneficiaryDetails(data);
@@ -103,19 +104,19 @@ const useRefundDetails = (fpi) => {
         addBeneficiaryDetailsOTPRequestInput: details,
       };
       return fpi.executeGQL(ADD_REFUND_BANK_DETAILS, values).then((res) => {
-      if (res.errors && res.errors.length > 0) {
-        const errorDetails = res.errors[0]?.details || {};
-        const errorMessage = 
-          errorDetails.description || 
-          res.errors[0]?.message || 
-          "An unexpected error occurred";
-        
-        showSnackbar(errorMessage, "error");
-        return { 
-          success: false, 
-          msg: errorMessage 
-        };
-      }
+        if (res.errors && res.errors.length > 0) {
+          const errorDetails = res.errors[0]?.details || {};
+          const errorMessage =
+            errorDetails.description ||
+            res.errors[0]?.message ||
+            "An unexpected error occurred";
+
+          showSnackbar(errorMessage, "error");
+          return {
+            success: false,
+            msg: errorMessage
+          };
+        }
 
         if (res?.data?.addRefundBankAccountUsingOTP?.success) {
           const data = { success: true };

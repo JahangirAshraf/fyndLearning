@@ -10,6 +10,7 @@ import {
 import { ADDRESS_LIST } from "../../../queries/addressQuery";
 import { LOCALITY, DELIVERY_PROMISE } from "../../../queries/logisticsQuery";
 import { getAddressStr } from "../../../helper/utils";
+import { deduplicatedFetch } from "../../../helper/api-deduplicator";
 
 const useHyperlocal = (fpi) => {
   const { t } = useGlobalTranslation("translation");
@@ -39,7 +40,9 @@ const useHyperlocal = (fpi) => {
   });
 
   const isLoggedIn = useGlobalStore(fpi.getters.LOGGED_IN);
-  const { address = [] } = useGlobalStore(fpi.getters.ADDRESS);
+  const { address = [], loading: isAddressFetching } = useGlobalStore(
+    fpi.getters.ADDRESS
+  );
 
   const { is_delivery_promise: isDeliveryPromise } = globalConfig;
   const { deliveryTat, isServicibilityError } = serviceabilityInfo;
@@ -80,9 +83,9 @@ const useHyperlocal = (fpi) => {
     const response = await fetchLocality(address, {
       meta: address?.geo_location
         ? {
-            latitude: address.geo_location.latitude,
-            longitude: address.geo_location.longitude,
-          }
+          latitude: address.geo_location.latitude,
+          longitude: address.geo_location.longitude,
+        }
         : {},
     });
     fpi.custom.setValue(`selectedAddress`, address);
@@ -115,7 +118,7 @@ const useHyperlocal = (fpi) => {
         }
         return response;
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   const openServiceabilityModal = () => {
@@ -153,10 +156,16 @@ const useHyperlocal = (fpi) => {
   }, [selectedAddress]);
 
   useEffect(() => {
-    if (isServiceability && isLoggedIn && !address.length) {
-      fpi.executeGQL(ADDRESS_LIST);
+    if (
+      isServiceability &&
+      isHeaderServiceability &&
+      isLoggedIn &&
+      !address.length &&
+      !isAddressFetching
+    ) {
+      deduplicatedFetch(fpi, ADDRESS_LIST);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isHeaderServiceability]);
 
   useEffect(() => {
     if (isServiceability && !!address?.length && !selectedAddress) {

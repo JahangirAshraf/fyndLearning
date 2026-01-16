@@ -2,24 +2,34 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "fdk-core/utils";
 import { GET_SHIPMENT_DETAILS } from "../queries/shipmentQuery";
-import useShipmentDetails from "../page-layouts/orders/useShipmentDetails";
-import useOrdersListing from "../page-layouts/orders/useOrdersListing";
 import OrderTrack from "@gofynd/theme-template/pages/order/order-tracking-details/order-tracking-details";
 import "@gofynd/theme-template/pages/order/order-tracking-details/order-tracking-details.css";
 
-export function Component({ fpi }) {
-  const { isLoading, orderShipments, linkOrderDetails } = useOrdersListing(fpi);
-  const { invoiceDetails } = useShipmentDetails(fpi);
+export function Component(props) {
+  const { fpi, shipmentData, orderData } = props;
+
+  const {
+    isLoading: isOrderLoading,
+    orderShipments = {},
+    linkOrderDetails
+  } = orderData || {};
+
+  const {
+    isLoading: isShipmentLoading,
+    invoiceDetails
+  } = shipmentData || {};
+
+  const isLoading = isOrderLoading || isShipmentLoading;
   const params = useParams();
   const [selectedShipmentBag, setSelectedShipmentBag] =
     useState(orderShipments);
-  const [isShipmentLoading, setIsShipmentLoading] = useState(false);
+  const [isLocalShipmentLoading, setIsLocalShipmentLoading] = useState(false);
 
   const { fulfillment_option } = useGlobalStore(fpi.getters.APP_FEATURES);
 
   const getShipmentDetails = () => {
     if (params?.shipmentId) {
-      setIsShipmentLoading(true);
+      setIsLocalShipmentLoading(true);
       try {
         const values = {
           shipmentId: params.shipmentId || "",
@@ -33,11 +43,11 @@ export function Component({ fpi }) {
             }
           })
           .finally(() => {
-            setIsShipmentLoading(false);
+            setIsLocalShipmentLoading(false);
           });
       } catch (error) {
         console.log({ error });
-        setIsShipmentLoading(false);
+        setIsLocalShipmentLoading(false);
       }
     }
   };
@@ -48,7 +58,7 @@ export function Component({ fpi }) {
       orderShipments={orderShipments}
       getShipmentDetails={getShipmentDetails}
       selectedShipment={selectedShipmentBag}
-      isShipmentLoading={isShipmentLoading}
+      isShipmentLoading={isLocalShipmentLoading}
       availableFOCount={fulfillment_option?.count || 1}
       linkOrderDetails={linkOrderDetails}
     ></OrderTrack>

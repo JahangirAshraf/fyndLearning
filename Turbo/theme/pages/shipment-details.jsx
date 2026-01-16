@@ -9,12 +9,5 @@ export const settings = JSON.stringify({
   props: [],
 });
 
-export const sections = JSON.stringify([
-  {
-    attributes: {
-      page: "shipment-details",
-    },
-  },
-]);
 
 export default ShipmentDetails;

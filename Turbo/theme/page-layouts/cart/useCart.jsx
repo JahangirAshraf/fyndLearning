@@ -19,6 +19,7 @@ import {
   useGlobalTranslation,
 } from "fdk-core/utils";
 import { translateDynamicLabel } from "../../helper/utils";
+import { deduplicatedFetch } from "../../helper/api-deduplicator";
 
 export function fetchCartDetails(fpi, payload = {}) {
   const defaultPayload = {
@@ -27,7 +28,7 @@ export function fetchCartDetails(fpi, payload = {}) {
     includeBreakup: true,
     ...payload,
   };
-  return fpi?.executeGQL?.(CART_DETAILS, defaultPayload);
+  return deduplicatedFetch(fpi, CART_DETAILS, defaultPayload);
 }
 
 const useCart = (fpi, isActive = true) => {
@@ -49,9 +50,9 @@ const useCart = (fpi, isActive = true) => {
   const [isCartUpdating, setIsCartUpdating] = useState(false);
   const [modeLoading, setIsModeLoading] = useState(false);
   const [applyRewardResponse, setApplyRewardResponse] = useState(null);
-  const [currentCartId, setCurrentCartId] = useState(null); 
+  const [currentCartId, setCurrentCartId] = useState(null);
   const [isRewardApplied, setIsRewardApplied] = useState(false); // ← NEW
-  
+
 
 
   const { buy_now_cart_items, cart_items, cart_items_count } = CART || {};
@@ -88,8 +89,14 @@ const useCart = (fpi, isActive = true) => {
 
   useEffect(() => {
     if (isActive) {
-      setIsLoading(true);
-      fetchCartDetails(fpi, { buyNow }).then(() => setIsLoading(false));
+      const handler = setTimeout(() => {
+        setIsLoading(true);
+        fetchCartDetails(fpi, { buyNow }).then(() => setIsLoading(false));
+      }, 100);
+
+      return () => {
+        clearTimeout(handler);
+      };
     }
   }, [fpi, i18nDetails?.currency?.code, deliveryLocationStr]);
 
@@ -147,32 +154,32 @@ const useCart = (fpi, isActive = true) => {
     () => cart_items?.currency?.symbol || "₹",
     [cart_items]
   );
-   
-  
+
+
   const onApplyLoyaltyPoints = async (isChecked, showToast = true) => {
     setIsLoyaltyLoading(true);
     setIsCartUpdating(true);
-  
+
     const payload = {
       includeItems: true,
       includeBreakup: true,
       cartId: cartId,
       redeemPoints: { redeem_points: isChecked },
     };
-  
+
     try {
       const res = await fpi.executeGQL(APPLY_REWARD_POINTS, payload, {
         skipStoreUpdate: false,
       });
-  
+
       const data = res?.data?.applyLoyaltyPoints;
       setApplyRewardResponse(data);
-  
+
       if (data?.success) {
         setIsRewardApplied(isChecked);
-  
+
         const toastKey = `loyaltyToastShown_${cartId}`;
-  
+
         if (isChecked) {
           if (showToast && !localStorage.getItem(toastKey)) {
             showSnackbar(data.message || "Reward points applied successfully", "success");
@@ -184,7 +191,7 @@ const useCart = (fpi, isActive = true) => {
           }
           localStorage.removeItem(toastKey);
         }
-  
+
         await fetchCartDetails(fpi);
       } else {
         let errorMsg = "Could not update reward points";
@@ -203,8 +210,8 @@ const useCart = (fpi, isActive = true) => {
       setIsLoyaltyLoading(false);
     }
   };
-  
-  
+
+
   function updateCartItems(
     event,
     itemDetails,
@@ -220,7 +227,7 @@ const useCart = (fpi, isActive = true) => {
       event.stopPropagation();
     }
     setIsCartUpdating(true);
-  
+
     try {
       const payload = {
         b: true,
@@ -244,34 +251,34 @@ const useCart = (fpi, isActive = true) => {
           operation,
         },
       };
-  
+
       return fpi
-        .executeGQL(CART_UPDATE, payload, { skipStoreUpdate: false })       
+        .executeGQL(CART_UPDATE, payload, { skipStoreUpdate: false })
         .then(async (res) => {
           if (res?.data?.updateCart?.success) {
             if (!moveToWishList) {
               showSnackbar(
                 translateDynamicLabel(res?.data?.updateCart?.message, t) ||
-                  t("resource.cart.cart_update_success"),
+                t("resource.cart.cart_update_success"),
                 "success"
               );
             }
-        
+
             await fetchCartDetails(fpi, { buyNow });
 
             if (isRewardApplied) {
-              await onApplyLoyaltyPoints(true, false); 
+              await onApplyLoyaltyPoints(true, false);
             }
-        
+
           } else if (!isSizeUpdate) {
             showSnackbar(
               translateDynamicLabel(res?.data?.updateCart?.message, t) ||
-                t("resource.cart.cart_update_success"),
+              t("resource.cart.cart_update_success"),
               "error"
             );
           }
         })
-        
+
         .catch((error) => {
           console.error(error);
         })
@@ -283,7 +290,7 @@ const useCart = (fpi, isActive = true) => {
       setIsCartUpdating(false);
     }
   }
-  
+
   function gotoCheckout() {
     if (cart_items?.id) {
       navigate(

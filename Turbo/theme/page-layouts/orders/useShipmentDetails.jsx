@@ -22,50 +22,49 @@ const useShipmentDetails = (fpi) => {
   const [isLoading, setIsLoading] = useState(true);
   const [attempts, setAttempts] = useState(0);
   const [showPolling, setShowPolling] = useState(false);
-  
-  const fetchShipmentDetails = useCallback(() => {
-    setTimeout(() => {
-      const values = {
-        shipmentId: params.shipmentId || "",
-      };
+  const [isFetching, setIsFetching] = useState(false);
 
-      fpi
-        .executeGQL(GET_SHIPMENT_DETAILS, values)
-        .then((res) => {
-          if (
-            res?.data?.shipment?.detail &&
-            Object.keys(shipmentDetails).length === 0
-          ) {
-            const data = res?.data?.shipment?.detail;
-            setShipmentDetails(data);
-            setShowPolling(false);
-            setIsLoading(false);
-          } else {
-            setAttempts((prev) => prev + 1);
-          }
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.log({ error });
-          setAttempts((prev) => prev + 1);
-        });
-    }, 2000);
-  }, [params.shipmentId, shipmentDetails, fpi]);
+  const fetchShipmentDetails = useCallback(async () => {
+    if (Object.keys(shipmentDetails).length > 0 || isFetching) {
+      return;
+    }
+
+    setIsFetching(true);
+    const values = {
+      shipmentId: params.shipmentId || "",
+    };
+
+    try {
+      const res = await fpi.executeGQL(GET_SHIPMENT_DETAILS, values);
+      if (res?.data?.shipment?.detail) {
+        setShipmentDetails(res?.data?.shipment?.detail);
+        if (res?.data?.shipment?.invoice_detail) {
+          setInvoiceDetails(res?.data?.shipment?.invoice_detail);
+        }
+        setShowPolling(false);
+        setIsLoading(false);
+      } else {
+        setAttempts((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error("Error fetching shipment details:", error);
+      setAttempts((prev) => prev + 1);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [params.shipmentId, shipmentDetails, fpi, isFetching]);
 
   useEffect(() => {
-    // Reset state when shipmentId changes
     if (params.shipmentId) {
       setShipmentDetails({});
       setAttempts(0);
       setShowPolling(false);
       setIsLoading(true);
     }
-  }, [params.shipmentId, location.search]);
+  }, [params.shipmentId]);
 
-  console.log("shipmentDetails", shipmentDetails)
-  console.log("showpolling",showPolling)
   useEffect(() => {
-    if (params.shipmentId) {
+    if (params.shipmentId && !isFetching) {
       if (attempts < 5 && Object.keys(shipmentDetails).length === 0) {
         fetchShipmentDetails();
       } else if (attempts >= 5) {
@@ -73,7 +72,7 @@ const useShipmentDetails = (fpi) => {
         setIsLoading(false);
       }
     }
-  }, [params.shipmentId, attempts, fetchShipmentDetails, shipmentDetails]);
+  }, [params.shipmentId, attempts, fetchShipmentDetails, shipmentDetails, isFetching]);
 
   function getBagReasons(bagObj) {
     setIsLoading(true);
@@ -110,7 +109,7 @@ const useShipmentDetails = (fpi) => {
     }
   }
 
- async function updateShipment(payload, type) {
+  async function updateShipment(payload, type) {
     setIsLoading(true);
     try {
       // First call UPDATE_DEFAULT_BENEFICIARY if beneficiary_id exists
@@ -196,7 +195,7 @@ const useShipmentDetails = (fpi) => {
       setIsLoading(false);
     }
   };
-  
+
   return {
     isLoading,
     shipmentDetails,

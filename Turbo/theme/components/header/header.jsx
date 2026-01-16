@@ -14,6 +14,7 @@ import {
   isLocalePresent,
   getDefaultLocale,
 } from "../../helper/utils";
+import { deduplicatedFetch } from "../../helper/api-deduplicator";
 import Search from "./search";
 import HeaderDesktop from "./desktop-header";
 import Navigation from "./navigation";
@@ -166,7 +167,7 @@ function Header({ fpi }) {
   useEffect(() => {
     if (
       isEmptyOrNull(CART_ITEMS?.cart_items) &&
-      location.pathname !== "/cart/bag/" &&
+      !/^\/cart\/bag\/?$/.test(location.pathname) &&
       !show_quantity_control
     ) {
       const payload = {
@@ -175,7 +176,7 @@ function Header({ fpi }) {
         includeBreakup: true,
         buyNow: buyNow === "true",
       };
-      fpi.executeGQL(CART_COUNT, payload);
+      deduplicatedFetch(fpi, CART_COUNT, payload);
     }
 
     const observers = [];
@@ -229,7 +230,7 @@ function Header({ fpi }) {
 
   useEffect(() => {
     if (isRunningOnClient()) {
-      setTimeout(() => {}, 1000);
+      setTimeout(() => { }, 1000);
       const cssVariables = {
         "--headerHeight": `${headerHeight}px`,
       };
@@ -309,31 +310,27 @@ function Header({ fpi }) {
     <>
       {!isHeaderHidden && (
         <div
-          className={`${styles.ctHeaderWrapper} fontBody ${isListingPage ? styles.listing : ""} ${
-            transparent_header && isValidSection && !sticky_header
-              ? styles.transparentHeader
-              : ""
-          } ${transparent_header && isValidSection && sticky_header ? styles.stickyTransparentHeader : ""}`}
+          className={`${styles.ctHeaderWrapper} fontBody ${isListingPage ? styles.listing : ""} ${transparent_header && isValidSection && !sticky_header
+            ? styles.transparentHeader
+            : ""
+            } ${transparent_header && isValidSection && sticky_header ? styles.stickyTransparentHeader : ""}`}
           ref={headerRef}
         >
           <header
-            className={`${styles.header} ${header_border ? styles.seperator : ""} ${
-              transparent_header && isValidSection
-                ? styles.transparentBackground
-                : ""
-            } ${scrolled ? styles.scrolled : ""}`}
+            className={`${styles.header} ${header_border ? styles.seperator : ""} ${transparent_header && isValidSection
+              ? styles.transparentBackground
+              : ""
+              } ${scrolled ? styles.scrolled : ""}`}
           >
             <div
-              className={`${styles.headerContainer} ${
-                transparent_header && isValidSection ? styles.paddingMobile : ""
-              } basePageContainer margin0auto `}
+              className={`${styles.headerContainer} ${transparent_header && isValidSection ? styles.paddingMobile : ""
+                } basePageContainer margin0auto `}
             >
               <div
-                className={`${styles.desktop}  ${
-                  transparent_header && isValidSection
-                    ? styles.transparent_desktop
-                    : ""
-                }`}
+                className={`${styles.desktop}  ${transparent_header && isValidSection
+                  ? styles.transparent_desktop
+                  : ""
+                  }`}
               >
                 <HeaderDesktop
                   checkLogin={checkLogin}
@@ -355,21 +352,19 @@ function Header({ fpi }) {
                 />
               </div>
               <div
-                className={`${styles.mobile}  ${
-                  transparent_header && isValidSection
-                    ? styles.transparent_mobile
-                    : ""
-                }`}
+                className={`${styles.mobile}  ${transparent_header && isValidSection
+                  ? styles.transparent_mobile
+                  : ""
+                  }`}
               >
                 <div
-                  className={`${styles.mobileTop} ${styles[header_layout]} ${styles[logo_menu_alignment]}  ${
-                    hideNavList &&
+                  className={`${styles.mobileTop} ${styles[header_layout]} ${styles[logo_menu_alignment]}  ${hideNavList &&
                     defaultHeaderName === "My Cart" &&
                     !cartBackNavigationList[currentStep] &&
                     logo_menu_alignment !== "layout_4"
-                      ? styles.leftLogo
-                      : ""
-                  }  ${transparent_header && isValidSection ? styles.transparent_mobile : ""}`}
+                    ? styles.leftLogo
+                    : ""
+                    }  ${transparent_header && isValidSection ? styles.transparent_mobile : ""}`}
                 >
                   {!hideNavList ? (
                     <Navigation
@@ -423,14 +418,13 @@ function Header({ fpi }) {
 
                   <FDKLink
                     to="/"
-                    className={`${styles.middle} ${styles.flexAlignCenter} ${
-                      hideNavList &&
+                    className={`${styles.middle} ${styles.flexAlignCenter} ${hideNavList &&
                       !checkoutId &&
                       logo_menu_alignment === "layout_4" &&
                       hideNavList
-                        ? styles.paddingRight
-                        : ""
-                    } ${hideNavList && checkoutId ? styles.visibilityNone : ""}`}
+                      ? styles.paddingRight
+                      : ""
+                      } ${hideNavList && checkoutId ? styles.visibilityNone : ""}`}
                   >
                     <img
                       style={{

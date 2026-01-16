@@ -96,14 +96,14 @@ function ProfileShipmentUpdatePage({ fpi }) {
       });
       getRefundDetails(shipmentDetails?.order_id);
     }
-    return () => {};
+    return () => { };
   }, [shipmentDetails?.order_id]);
 
   useEffect(() => {
     setAccordianlv1({
       0: reasonsList.reasons,
     });
-    return () => {};
+    return () => { };
   }, [reasonsList]);
 
   const { bags, bundleGroups, bundleGroupArticles } = useMemo(() => {
@@ -290,10 +290,10 @@ function ProfileShipmentUpdatePage({ fpi }) {
     return shipmentDetails?.can_cancel
       ? !(selectLast() && !selectedReason[selectLast()].reasons?.length > 0)
       : !(
-          selectLast() &&
-          !selectedReason[selectLast()].reasons?.length > 0 &&
-          (showimg() ? imageList.length > 0 : true)
-        );
+        selectLast() &&
+        !selectedReason[selectLast()].reasons?.length > 0 &&
+        (showimg() ? imageList.length > 0 : true)
+      );
   }, [shipmentDetails, selectedReason, imageList]);
 
   const getUpdatedBagsList = () => {

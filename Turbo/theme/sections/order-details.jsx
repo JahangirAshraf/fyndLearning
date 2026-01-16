@@ -11,8 +11,7 @@ import ShipmentAddress from "@gofynd/theme-template/components/shipment-address/
 import "@gofynd/theme-template/components/shipment-address/shipment-address.css";
 import PaymentDetailCard from "@gofynd/theme-template/components/payment-detail-card/payment-detail-card";
 import "@gofynd/theme-template/components/payment-detail-card/payment-detail-card.css";
-import styles from "../page-layouts/profile/styles/profile-my-order-shipment-page.less";
-import useShipmentDetails from "../page-layouts/orders/useShipmentDetails";
+import detailsStyles from "../page-layouts/profile/styles/profile-my-order-shipment-page.less";
 import EmptyState from "../components/empty-state/empty-state";
 import Loader from "../components/loader/loader";
 import {
@@ -27,7 +26,6 @@ import { detectMobileWidth } from "../helper/utils";
 import ScheduleIcon from "../assets/images/schedule.svg";
 import OrderPendingIcon from "../assets/images/order-pending.svg";
 import { getGroupedShipmentBags } from "../helper/utils";
-import useOrdersListing from "../page-layouts/orders/useOrdersListing";
 
 import "@gofynd/theme-template/components/core/modal/modal.css";
 
@@ -48,29 +46,27 @@ function ShipmentPolling() {
   );
 }
 
-export function Component({ blocks, globalConfig, fpi }) {
+export function Component(props) {
+  const { blocks, globalConfig, fpi, shipmentData, orderData } = props;
   const { t } = useGlobalTranslation("translation");
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
   const { fulfillment_option } = useGlobalStore(fpi.getters.APP_FEATURES);
 
-  // Hook for single shipment details (used for polling & specific shipment view)
   const {
     isLoading: isShipmentLoading,
-    shipmentDetails,
+    shipmentDetails = {},
     invoiceDetails,
     getInvoice,
     showPolling,
     attempts,
-  } = useShipmentDetails(fpi);
+  } = shipmentData || {};
 
-  // Hook for full order details (contains multiple shipments)
-  // We pass the order_id from shipmentDetails if it's available (for shipment detail pages)
   const {
     isLoading: isOrderLoading,
-    orderShipments: parentOrderData,
-  } = useOrdersListing(fpi, shipmentDetails?.order_id);
+    orderShipments: parentOrderData = {},
+  } = orderData || {};
 
   // Decide which data to use: if orderId is in URL, we show the full order.
   const isOrderView = !!params.orderId;
@@ -225,14 +221,14 @@ export function Component({ blocks, globalConfig, fpi }) {
       ) : (
         <div className="basePageContainer">
           {showPolling && (
-            <div className={`${styles.error}`}>
+            <div className={`${detailsStyles.error}`}>
               <ShipmentPolling />
             </div>
           )}
           {(!shipmentsToDisplay || shipmentsToDisplay.length === 0) &&
             !showPolling &&
             !isLoading && (
-              <div className={`${styles.error}`}>
+              <div className={`${detailsStyles.error}`}>
                 <EmptyState
                   title={t("resource.section.order.empty_state_title")}
                   description={t("resource.section.order.empty_state_desc")}
@@ -256,7 +252,7 @@ export function Component({ blocks, globalConfig, fpi }) {
 
               return (
                 <div
-                  className={`${styles.shipmentWrapper}`}
+                  className={`${detailsStyles.shipmentWrapper}`}
                   key={shipmentDetails.shipment_id || sIndex}
                 >
                   {blocks?.filter(block => shipmentBlocks.includes(block.type) || !["shipment_address", "payment_details_card", "shipment_breakup"].includes(block.type))
@@ -266,30 +262,30 @@ export function Component({ blocks, globalConfig, fpi }) {
                         case "order_header":
                           return (
                             <>
-                              <div className={`${styles.shipmentHeader}`} key={key}>
+                              <div className={`${detailsStyles.shipmentHeader}`} key={key}>
                                 <div className="flexCenter">
                                   <OrderDeliveryIcon />
                                 </div>
-                                <div className={styles.title}>
+                                <div className={detailsStyles.title}>
                                   {shipmentDetails?.shipment_id}
                                 </div>
                               </div>
                               {shipmentDetails?.shipment_status && (
-                                <div className={styles.reattemptButtonCont}>
+                                <div className={detailsStyles.reattemptButtonCont}>
                                   <div
                                     className={`${shipmentDetails?.shipment_status?.value ===
                                       "delivery_attempt_failed"
-                                      ? styles.errorStatus
+                                      ? detailsStyles.errorStatus
                                       : shipmentDetails?.shipment_status
                                         ?.value ===
                                         "delivery_reattempt_requested"
-                                        ? styles.info
-                                        : styles.status
+                                        ? detailsStyles.info
+                                        : detailsStyles.status
                                       }`}
                                   >
                                     {shipmentDetails?.shipment_status.title}
                                   </div>
-                                  <div className={styles.buttonContainer}>
+                                  <div className={detailsStyles.buttonContainer}>
                                     {shipmentDetails?.shipment_status?.value ==
                                       "delivery_attempt_failed" &&
                                       shipmentDetails?.ndr_details?.allowed_delivery_window
@@ -311,22 +307,22 @@ export function Component({ blocks, globalConfig, fpi }) {
                                         </button>
                                       )}
                                     <div
-                                      className={`${styles.requestReattempt} ${shipmentDetails?.shipment_status?.value ===
+                                      className={`${detailsStyles.requestReattempt} ${shipmentDetails?.shipment_status?.value ===
                                         "delivery_reattempt_requested"
-                                        ? styles.deliveryReattemptRequested
+                                        ? detailsStyles.deliveryReattemptRequested
                                         : ""
                                         }`}
                                     >
                                       {shipmentDetails?.shipment_status?.value ==
                                         "delivery_reattempt_requested" && (
                                           <div
-                                            className={styles.scheduleIconContainer}
+                                            className={detailsStyles.scheduleIconContainer}
                                           >
-                                            <div className={styles.scheduleIcon}>
+                                            <div className={detailsStyles.scheduleIcon}>
                                               {" "}
                                               <ScheduleIcon />
                                             </div>
-                                            <div className={styles.scheduleIconText}>
+                                            <div className={detailsStyles.scheduleIconText}>
                                               {shipmentDetails?.ndr_details
                                                 ?.delivery_scheduled_date &&
                                                 `Delivery Reattempt On ${formatUTCToDateString(shipmentDetails?.ndr_details?.delivery_scheduled_date)}`}
@@ -343,7 +339,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                         case "shipment_items":
                           return (
                             <React.Fragment key={key}>
-                              <div className={`${styles.shipmentBagItem}`}>
+                              <div className={`${detailsStyles.shipmentBagItem}`}>
                                 {shipmentBags?.map(
                                   (item, index) => (
                                     <div
@@ -376,7 +372,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                                 <div>
                                   {!show && (
                                     <div
-                                      className={`${styles.viewMore} `}
+                                      className={`${detailsStyles.viewMore} `}
                                       onClick={showMore}
                                     >
                                       {`+ ${shipmentBags.length - 2} ${t("resource.facets.view_more_lower")}`}
@@ -384,7 +380,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                                   )}
                                   {show && (
                                     <div
-                                      className={`${styles.showLess} `}
+                                      className={`${detailsStyles.showLess} `}
                                       onClick={showLess}
                                     >
                                       {t("resource.facets.view_less")}
@@ -398,19 +394,19 @@ export function Component({ blocks, globalConfig, fpi }) {
                         case "shipment_medias":
                           return (
                             !!shipmentDetails?.return_meta?.images?.length && (
-                              <div className={styles.shipment} key={key}>
-                                <div className={styles.mediaPreview}>
-                                  <div className={styles.previewTitle}>
+                              <div className={detailsStyles.shipment} key={key}>
+                                <div className={detailsStyles.mediaPreview}>
+                                  <div className={detailsStyles.previewTitle}>
                                     {t("resource.order.uploaded_media")}
                                   </div>
-                                  <ul className={styles.fileList}>
+                                  <ul className={detailsStyles.fileList}>
                                     {shipmentDetails.return_meta.images.map(
                                       (file, index) => (
-                                        <li key={index} className={styles.fileItem}>
+                                        <li key={index} className={detailsStyles.fileItem}>
                                           {isVideo(file.url) ? (
-                                            <div className={styles.videoContainer}>
+                                            <div className={detailsStyles.videoContainer}>
                                               <video
-                                                className={styles.uploadedImage}
+                                                className={detailsStyles.uploadedImage}
                                                 src={file.url}
                                                 preload="metadata"
                                                 onClick={() => openMediaModal(file)}
@@ -420,7 +416,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                                                     document.createElement("img");
                                                   img.src = DefaultImage;
                                                   img.className =
-                                                    styles.uploadedImage;
+                                                    detailsStyles.uploadedImage;
                                                   img.style.cursor = "pointer";
                                                   img.onclick = () =>
                                                     openMediaModal(file);
@@ -446,13 +442,13 @@ export function Component({ blocks, globalConfig, fpi }) {
                                                   type="video/ogg"
                                                 />
                                               </video>
-                                              <div className={styles.videoPlayIcon}>
+                                              <div className={detailsStyles.videoPlayIcon}>
                                                 <svg
                                                   width="40"
                                                   height="40"
                                                   viewBox="0 0 48 48"
                                                   fill="none"
-                                                  className={styles.playIcon}
+                                                  className={detailsStyles.playIcon}
                                                 >
                                                   <circle
                                                     cx="24"
@@ -470,7 +466,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                                             </div>
                                           ) : (
                                             <img
-                                              className={styles.uploadedImage}
+                                              className={detailsStyles.uploadedImage}
                                               src={file.url}
                                               alt={
                                                 file.desc || `Image ${index + 1}`
@@ -496,7 +492,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                           return (
                             initial && (
                               <div
-                                className={`${styles.shipment} ${styles.shipmentTracking}`}
+                                className={`${detailsStyles.shipment} ${detailsStyles.shipmentTracking}`}
                                 key={key}
                               >
                                 <ShipmentTracking
@@ -525,7 +521,7 @@ export function Component({ blocks, globalConfig, fpi }) {
 
             {/* Render Order Summary Blocks once at the end */}
             {initial && shipmentsToDisplay.length > 0 && (
-              <div className={styles.orderSummaryContainer}>
+              <div className={detailsStyles.orderSummaryContainer}>
                 {blocks?.filter(block => ["shipment_address", "payment_details_card", "shipment_breakup"].includes(block.type))
                   .map((block, index) => {
                     const key = `summary_${block.type}_${index}`;
@@ -534,7 +530,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                     switch (block.type) {
                       case "shipment_address":
                         return (
-                          <div className={`${styles.shipment}`} key={key}>
+                          <div className={`${detailsStyles.shipment}`} key={key}>
                             <ShipmentAddress
                               address={referenceShipment?.delivery_address}
                             ></ShipmentAddress>
@@ -544,7 +540,7 @@ export function Component({ blocks, globalConfig, fpi }) {
                       case "payment_details_card":
                         return (
                           referenceShipment?.payment_info?.length > 0 && (
-                            <div className={`${styles.shipment}`} key={key}>
+                            <div className={`${detailsStyles.shipment}`} key={key}>
                               <PaymentDetailCard
                                 breakup={parentOrderData?.breakup_values || referenceShipment?.breakup_values}
                                 paymentDetails={referenceShipment?.payment_info}
@@ -555,7 +551,7 @@ export function Component({ blocks, globalConfig, fpi }) {
 
                       case "shipment_breakup":
                         return (
-                          <div className={`${styles.shipment}`} key={key}>
+                          <div className={`${detailsStyles.shipment}`} key={key}>
                             <ShipmentBreakup
                               fpi={fpi}
                               breakup={parentOrderData?.breakup_values || referenceShipment?.breakup_values}
@@ -572,18 +568,18 @@ export function Component({ blocks, globalConfig, fpi }) {
           </div>
 
           {!initial && (
-            <div className={`${styles.btndiv}`}>
-              <div className={`${styles.updateBtns}`}>
+            <div className={`${detailsStyles.btndiv}`}>
+              <div className={`${detailsStyles.updateBtns}`}>
                 <button
                   type="button"
-                  className={`${styles.commonBtn} ${styles.cancelBtn}`}
+                  className={`${detailsStyles.commonBtn} ${detailsStyles.cancelBtn}`}
                   onClick={() => setInitial(!initial)}
                 >
                   {t("resource.facets.cancel")}
                 </button>
                 <button
                   type="button"
-                  className={`${styles.commonBtn} ${styles.btn}`}
+                  className={`${detailsStyles.commonBtn} ${detailsStyles.btn}`}
                   disabled={!btndisable}
                   onClick={goToReasons}
                 >
@@ -599,33 +595,33 @@ export function Component({ blocks, globalConfig, fpi }) {
               hideHeader={true}
               isOpen={isMediaModalOpen}
               closeDialog={closeMediaModal}
-              bodyClassName={styles.mediaModalBody}
-              containerClassName={styles.mediaModalContainer}
+              bodyClassName={detailsStyles.mediaModalBody}
+              containerClassName={detailsStyles.mediaModalContainer}
               modalType="center-modal"
             >
-              <div className={styles.mediaModalContent}>
-                <h4 className={styles.mediaModalTitle}>
+              <div className={detailsStyles.mediaModalContent}>
+                <h4 className={detailsStyles.mediaModalTitle}>
                   {isVideo(selectedMedia.url)
                     ? t("resource.order.video_preview")
                     : t("resource.order.image_preview")}
-                  <span onClick={closeMediaModal} className={styles.closeIcon}>
+                  <span onClick={closeMediaModal} className={detailsStyles.closeIcon}>
                     <CrossIcon />
                   </span>
                 </h4>
 
-                <div className={styles.mediaContent}>
+                <div className={detailsStyles.mediaContent}>
                   {(() => {
                     if (mediaLoadError) {
                       return (
-                        <div className={styles.mediaErrorContainer}>
-                          <DefaultImage className={styles.modalImage} />
+                        <div className={detailsStyles.mediaErrorContainer}>
+                          <DefaultImage className={detailsStyles.modalImage} />
                         </div>
                       );
                     }
                     if (isVideo(selectedMedia.url)) {
                       return (
                         <video
-                          className={styles.modalVideo}
+                          className={detailsStyles.modalVideo}
                           src={selectedMedia.url}
                           controls
                           autoPlay
@@ -639,9 +635,9 @@ export function Component({ blocks, globalConfig, fpi }) {
                       );
                     }
                     return (
-                      <div className={styles.imageContainer}>
+                      <div className={detailsStyles.imageContainer}>
                         <img
-                          className={styles.modalImage}
+                          className={detailsStyles.modalImage}
                           src={selectedMedia.url}
                           alt={selectedMedia.desc || "image"}
                           onError={handleMediaError}

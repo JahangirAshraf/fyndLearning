@@ -27,7 +27,7 @@ import {
 function sanitizeAddressPayload(formValues = {}) {
   const payload = { ...formValues };
 
-  
+
   if (
     payload?.geo_location?.latitude === "" &&
     payload?.geo_location?.longitude === ""
@@ -40,7 +40,7 @@ function sanitizeAddressPayload(formValues = {}) {
     if (payload[k] === undefined) delete payload[k];
   });
 
-  
+
   if (
     typeof payload?.phone === "object" &&
     payload?.phone?.mobile &&
@@ -164,7 +164,7 @@ const useCartDeliveryLocation = ({ fpi }) => {
           currency: countryInfo.currency.code,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleCountrySearch = (event) => {
@@ -215,7 +215,7 @@ const useCartDeliveryLocation = ({ fpi }) => {
         } else {
           showSnackbar(
             res?.errors?.[0]?.message ||
-              t("resource.common.address.pincode_verification_failure")
+            t("resource.common.address.pincode_verification_failure")
           );
           data.showError = true;
           data.errorMsg =
@@ -356,7 +356,7 @@ const useCartDeliveryLocation = ({ fpi }) => {
       ? updateAddressMutation?.(payload, editingAddressId)
       : addAddressMutation?.(payload);
 
-    if (!runMutation) return; 
+    if (!runMutation) return;
 
     try {
       const res = await runMutation;
@@ -367,7 +367,7 @@ const useCartDeliveryLocation = ({ fpi }) => {
         if (!success) {
           showSnackbar(
             res?.errors?.[0]?.message ??
-              t("resource.common.address.address_update_failure"),
+            t("resource.common.address.address_update_failure"),
             "error"
           );
           return;
@@ -394,7 +394,7 @@ const useCartDeliveryLocation = ({ fpi }) => {
       if (!success) {
         showSnackbar(
           res?.errors?.[0]?.message ??
-            t("resource.common.address.address_addition_failure"),
+          t("resource.common.address.address_addition_failure"),
           "error"
         );
         return;
