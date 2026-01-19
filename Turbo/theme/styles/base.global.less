@@ -8,11 +8,14 @@
   padding: 0;
   box-sizing: border-box;
   scrollbar-width: none;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
 
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-    width: 0; /* Remove scrollbar space */
+    display: none;
+    /* Chrome, Safari, Opera */
+    width: 0;
+    /* Remove scrollbar space */
     height: 0;
   }
 }
@@ -35,6 +38,7 @@ body.noscroll {
 }
 
 html {
+
   body,
   button,
   input,
@@ -100,47 +104,58 @@ button:active {
 .display-block {
   display: block;
 }
+
 .inline-block,
 .inlineBlock {
   display: inline-block;
 }
+
 .flex-row {
   display: flex;
 }
+
 .flex-column,
 .flexColumn {
   display: flex;
   flex-direction: column;
 }
+
 .flex-align-center,
 .flexAlignCenter {
   .flex-align-center();
 }
+
 .flex-justify-center,
 .flexJustifyCenter {
   display: flex;
   justify-content: center;
 }
+
 .flex-center,
 .flexCenter {
   .flex-center();
 }
+
 .justify-start,
 .justifyStart {
   justify-content: flex-start;
 }
+
 .justify-end,
 .justifyEnd {
   justify-content: flex-end;
 }
+
 .justify-between,
 .justifyBetween {
   justify-content: space-between;
 }
+
 .justify-around,
 .justifyAround {
   justify-content: space-around;
 }
+
 .justify-evenly,
 .justifyEvenly {
   justify-content: space-evenly;
@@ -158,6 +173,7 @@ h1,
   line-height: 42px;
   letter-spacing: -0.03em;
   color: @TextHeading;
+
   @media @desktop {
     font-size: 36px;
     line-height: 48px;
@@ -171,6 +187,7 @@ h2,
   line-height: 36px;
   letter-spacing: -0.03em;
   color: @TextHeading;
+
   @media @desktop {
     font-size: 32px;
     line-height: 42px;
@@ -180,6 +197,7 @@ h2,
 h3,
 .h3 {
   .h3(mobile);
+
   @media @desktop {
     .h3(desktop);
   }
@@ -188,6 +206,7 @@ h3,
 h4,
 .h4 {
   .h4(mobile);
+
   @media @desktop {
     .h4(desktop);
   }
@@ -200,6 +219,7 @@ h5,
   line-height: 16px;
   letter-spacing: -0.02em;
   color: @TextHeading;
+
   @media @desktop {
     font-size: 16px;
     line-height: 18px;
@@ -212,6 +232,7 @@ h5,
   line-height: 18px;
   letter-spacing: -0.02em;
   color: @TextBody;
+
   @media @desktop {
     font-size: 16px;
     line-height: 20px;
@@ -222,6 +243,7 @@ h5,
 .bSmall,
 .b2 {
   .b2(mobile);
+
   @media @desktop {
     .b2(desktop);
   }
@@ -232,6 +254,7 @@ h5,
   font-weight: 700;
   line-height: 48px;
   letter-spacing: -0.02em;
+
   @media @desktop {
     font-size: 64px;
     line-height: 85px;
@@ -297,6 +320,7 @@ h5,
       border-color: @ButtonPrimaryL1;
       background-color: @ButtonPrimaryL1;
     }
+
     &:disabled {
       border-color: @ButtonPrimaryL3;
       background-color: @ButtonPrimaryL3;
@@ -403,15 +427,18 @@ img::selection {
 .view-all-mobile,
 .viewAllMobile {
   display: none;
+
   @media @tablet {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 40px;
   }
+
   @media @mobile {
     margin-top: 24px;
   }
+
   // &.view-all-horizontal {
   //   @media @tablet {
   //     margin-top: 40px;
@@ -432,6 +459,7 @@ img::selection {
 .noScroll {
   overflow-y: hidden;
 }
+
 .hide-overflow,
 .hideOverflow {
   overflow: hidden;
@@ -444,22 +472,32 @@ img::selection {
 
 :global {
   .snackbar {
-    top: 80px !important; /* Remove the top position */
-    bottom: 20px; /* Ensure it shows at the bottom if needed */
-    inset-inline-start: auto; /* Override if it has a specific left value */
-    inset-inline-end: 0; /* Start from the right side */
-    animation: slideInRight 0.5s ease-out forwards; /* New animation */
+    top: 80px !important;
+    /* Remove the top position */
+    bottom: 20px;
+    /* Ensure it shows at the bottom if needed */
+    inset-inline-start: auto;
+    /* Override if it has a specific left value */
+    inset-inline-end: 0;
+    /* Start from the right side */
+    animation: slideInRight 0.5s ease-out forwards;
+
+    /* New animation */
     [dir="rtl"] & {
-      animation: slideInLeft 0.5s ease-out forwards; /* New animation */
+      animation: slideInLeft 0.5s ease-out forwards;
+      /* New animation */
     }
   }
 
   @keyframes slideInRight {
     from {
-      transform: translateX(100%); /* Start off-screen from the right */
+      transform: translateX(100%);
+      /* Start off-screen from the right */
     }
+
     to {
-      transform: translateX(0); /* Move into the viewport */
+      transform: translateX(0);
+      /* Move into the viewport */
     }
   }
 }

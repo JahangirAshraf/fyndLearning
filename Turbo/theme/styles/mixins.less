@@ -23,19 +23,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .overflow-ellipsis() {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 // Mixins for ios 14 and below
 .column-gap(@gap) {
-  & > *:not(:last-child) {
+  &>*:not(:last-child) {
     margin-inline-end: @gap;
   }
 }
 
 .row-gap(@gap) {
-  & > *:not(:last-child) {
+  &>*:not(:last-child) {
     margin-bottom: @gap;
   }
 }
@@ -46,16 +48,19 @@
   inset-inline-start: @position;
   inset-inline-end: @position;
 }
+
 .aspect-ratio(@ratio) {
   position: relative;
-  & > * {
+
+  &>* {
     position: absolute;
     .inset(0);
   }
+
   &:before {
     content: "";
     display: block;
-    padding-bottom: ~"calc(100% * (1 /(@{ratio})))";
+    padding-bottom:~"calc(100% * (1 /(@{ratio})))";
   }
 }
 
@@ -64,7 +69,8 @@
     margin-inline-start: -(@column-gap / 2);
     margin-inline-end: -(@column-gap / 2);
     margin-bottom: -@row-gap;
-    & > * {
+
+    &>* {
       padding-inline-start: @column-gap / 2;
       padding-inline-end: @column-gap / 2;
       margin-bottom: @row-gap;
@@ -82,12 +88,12 @@
   letter-spacing: -0.02em;
   color: @TextHeading;
 
-  & when (@screen = desktop) {
+  & when (@screen =desktop) {
     font-size: 28px;
     line-height: 36px;
   }
 
-  & when (@screen = mobile) {
+  & when (@screen =mobile) {
     font-size: 24px;
     line-height: 32px;
   }
@@ -98,12 +104,12 @@
   letter-spacing: -0.02em;
   color: @TextHeading;
 
-  & when (@screen = desktop) {
+  & when (@screen =desktop) {
     font-size: 20px;
     line-height: 24px;
   }
 
-  & when (@screen = mobile) {
+  & when (@screen =mobile) {
     font-size: 16px;
     line-height: 18px;
   }
@@ -114,12 +120,12 @@
   letter-spacing: -0.02em;
   color: @TextBody;
 
-  & when (@screen = desktop) {
+  & when (@screen =desktop) {
     font-size: 14px;
     line-height: 18px;
   }
 
-  & when (@screen = mobile) {
+  & when (@screen =mobile) {
     font-size: 12px;
     line-height: 16px;
   }
@@ -130,12 +136,12 @@
   letter-spacing: -0.02em;
   color: @TextBody;
 
-  & when (@screen = desktop) {
+  & when (@screen =desktop) {
     font-size: 14px;
     line-height: 18px;
   }
 
-  & when (@screen = mobile) {
+  & when (@screen =mobile) {
     font-size: 12px;
     line-height: 16px;
   }
@@ -146,24 +152,24 @@
   letter-spacing: -0.02em;
   color: @TextBody;
 
-  & when (@screen = desktop) {
+  & when (@screen =desktop) {
     font-size: 12px;
     line-height: 14px;
   }
 
-  & when (@screen = mobile) {
-  }
+  & when (@screen =mobile) {}
 }
 
 .btn-font(@screen) {
   font-weight: 500;
   letter-spacing: -0.02em;
-  & when (@screen = desktop) {
+
+  & when (@screen =desktop) {
     font-size: 14px;
     line-height: 16px;
   }
 
-  & when (@screen = mobile) {
+  & when (@screen =mobile) {
     font-size: 12px;
     line-height: 14px;
   }
@@ -173,6 +179,7 @@
   .btn-font(mobile);
   border-radius: @ButtonRadius;
   cursor: pointer;
+
   @media @desktop {
     .btn-font(desktop);
   }

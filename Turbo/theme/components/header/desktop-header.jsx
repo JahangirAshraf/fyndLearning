@@ -31,7 +31,7 @@ function HeaderDesktop({
   isPromiseLoading = false,
   deliveryAddress = "",
   deliveryPromise = "",
-  onServiceabilityClick = () => {},
+  onServiceabilityClick = () => { },
   languageIscCode,
   hideNavList,
 }) {
@@ -71,23 +71,20 @@ function HeaderDesktop({
 
   return (
     <div
-      className={`${styles.headerDesktop}  ${
-        styles[globalConfig.header_layout]
-      } ${styles[globalConfig.logo_menu_alignment]}`}
+      className={`${styles.headerDesktop}  ${styles[globalConfig.header_layout]
+        } ${styles[globalConfig.logo_menu_alignment]}`}
     >
       <div
-        className={`${styles.firstRow} ${
-          isDoubleRowHeader && globalConfig?.always_on_search && hideNavList
+        className={`${styles.firstRow} ${isDoubleRowHeader && globalConfig?.always_on_search && hideNavList
             ? styles.increasePadding
             : ""
-        }`}
+          }`}
       >
         <div className={`${styles.left}`}>
           {!isDoubleRowHeader && !hideNavList && (
             <Navigation
-              customClass={`${styles.firstRowNav} ${
-                styles[globalConfig?.header_layout]
-              }`}
+              customClass={`${styles.firstRowNav} ${styles[globalConfig?.header_layout]
+                }`}
               maxMenuLength={getMenuMaxLength()}
               fallbackLogo={fallbackLogo}
               navigationList={navigation}
@@ -273,7 +270,7 @@ const ServiceabilityButton = ({
   isPromiseLoading = false,
   deliveryAddress = "",
   deliveryPromise = "",
-  onServiceabilityClick = () => {},
+  onServiceabilityClick = () => { },
 }) => {
   const { t } = useGlobalTranslation("translation");
   return (

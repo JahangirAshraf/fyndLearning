@@ -469,7 +469,7 @@ const useProductListing = ({ fpi, props }) => {
     searchParams?.delete("page_no");
     navigate?.(
       location?.pathname +
-        (searchParams?.toString() ? `?${searchParams.toString()}` : "")
+      (searchParams?.toString() ? `?${searchParams.toString()}` : "")
     );
   };
 
@@ -483,7 +483,7 @@ const useProductListing = ({ fpi, props }) => {
     searchParams?.delete("page_no");
     navigate?.(
       location?.pathname +
-        (searchParams?.toString() ? `?${searchParams.toString()}` : "")
+      (searchParams?.toString() ? `?${searchParams.toString()}` : "")
     );
   }
 

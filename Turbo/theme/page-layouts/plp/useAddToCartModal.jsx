@@ -102,7 +102,7 @@ const useAddToCartModal = ({ fpi, pageConfig }) => {
         if (isEmptyOrNull(selectedProductPrice)) {
           setPincodeErrorMessage(
             productPriceWithFO?.errors?.[0]?.message ||
-              t("resource.product.product_not_serviceable")
+            t("resource.product.product_not_serviceable")
           );
         } else {
           setPincodeErrorMessage("");
@@ -161,11 +161,10 @@ const useAddToCartModal = ({ fpi, pageConfig }) => {
   const handleAddToCart = useCallback(
     async (productSlug) => {
       if (!order?.enabled) {
-        console.log("triggered");
 
         showSnackbar(
           translateDynamicLabel(order?.message, t) ||
-            t("resource.common.order_not_accepting"),
+          t("resource.common.order_not_accepting"),
           "error"
         );
         return;
@@ -239,7 +238,7 @@ const useAddToCartModal = ({ fpi, pageConfig }) => {
         } else {
           setPincodeErrorMessage(
             localityData?.errors?.[0]?.message ||
-              t("resource.common.address.pincode_verification_failure")
+            t("resource.common.address.pincode_verification_failure")
           );
         }
       } catch (error) {
@@ -354,7 +353,7 @@ const useAddToCartModal = ({ fpi, pageConfig }) => {
             if (!buyNow) fetchCartDetails(fpi);
             showSnackbar(
               translateDynamicLabel(outRes?.data?.addItemsToCart?.message, t) ||
-                t("resource.common.add_to_cart_success"),
+              t("resource.common.add_to_cart_success"),
               "success"
             );
             if (buyNow) {
@@ -365,7 +364,7 @@ const useAddToCartModal = ({ fpi, pageConfig }) => {
           } else {
             showSnackbar(
               translateDynamicLabel(outRes?.data?.addItemsToCart?.message, t) ||
-                t("resource.common.add_cart_failure"),
+              t("resource.common.add_cart_failure"),
               "error"
             );
           }

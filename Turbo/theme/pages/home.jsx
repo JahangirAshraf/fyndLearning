@@ -8,7 +8,10 @@ import { sanitizeHTMLTag } from "../helper/utils";
 import { getHelmet } from "../providers/global-provider";
 import useSeoMeta from "../helper/hooks/useSeoMeta";
 
+// import ParentComponent from "../components/learning/PropTest";
+
 function Home({ numberOfSections, fpi }) {
+  // console.log("Home Page Rendering", { numberOfSections });
   const { t } = useGlobalTranslation("translation");
   const page = useGlobalStore(fpi.getters.PAGE) || {};
   const { isEdit = false } = useGlobalStore(fpi.getters.CUSTOM_VALUE);
@@ -106,6 +109,9 @@ function Home({ numberOfSections, fpi }) {
       })}
       <div className="margin0auto basePageContainer">
         <h1 className="visually-hidden">{title}</h1>
+        {/* React Learning Component */}
+        {/* <ParentComponent /> */}
+
         {page?.value === "home" && (
           <SectionRenderer
             sections={renderSections || sections}

@@ -1,0 +1,167 @@
+@import "../../styles/main.less";
+
+.plp-wrapper {
+    padding: 0 16px;
+    max-width: 1440px;
+    margin: 0 auto;
+
+    .product-listing-container {
+        display: flex;
+        gap: 24px;
+        padding: 24px 0;
+
+        @media @mobile {
+            flex-direction: column;
+            padding: 16px 0;
+        }
+
+
+        // Sidebar
+        .plp-sidebar {
+            width: 25%;
+            min-width: 250px;
+            padding-right: 24px;
+            border-right: 1px solid #eee;
+
+            @media @mobile {
+                display: none; // Hidden on mobile for now (needs Drawer)
+            }
+        }
+
+        .plp-content {
+            flex: 1;
+
+            // Header
+            .plpHeader {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 24px;
+                padding-bottom: 16px;
+                border-bottom: 1px solid #eee;
+
+                @media @mobile {
+                    flex-direction: column;
+                    gap: 12px;
+                    align-items: flex-start;
+                }
+
+                .productCount {
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                .sortWrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    .sortSelect {
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        background: #fff;
+                    }
+                }
+            }
+
+            .product-grid {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: repeat(2, 1fr); // Default mobile
+
+                @media @mobile {
+                    &[data-mob="1"] {
+                        grid-template-columns: 1fr;
+                    }
+
+                    &[data-mob="2"] {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
+
+                @media @tablet {
+                    gap: 24px;
+
+                    &[data-tablet="2"] {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    &[data-tablet="3"] {
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+                }
+
+                @media @desktop {
+                    gap: 24px;
+
+                    &[data-desktop="2"] {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    &[data-desktop="4"] {
+                        grid-template-columns: repeat(4, 1fr);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Filter Styles
+.filterSidebar {
+    .filterTitle {
+        font-size: 18px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .filterGroup {
+        margin-bottom: 24px;
+
+        .filterGroupTitle {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filterOptions {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+
+            .filterOption {
+                margin-bottom: 8px;
+
+                label {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    color: #333;
+
+                    &:hover {
+                        color: #000;
+                    }
+
+                    input[type="checkbox"] {
+                        width: 16px;
+                        height: 16px;
+                    }
+
+                    .filterCount {
+                        color: #999;
+                        font-size: 12px;
+                        margin-left: auto;
+                    }
+                }
+            }
+        }
+    }
+}

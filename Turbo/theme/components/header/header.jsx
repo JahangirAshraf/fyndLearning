@@ -306,8 +306,40 @@ function Header({ fpi }) {
     hideNavList && checkoutId ? "Select Address" : "My Cart";
   const cartBackNavigationList = ["Select Address", "Order Summary", "Payment"];
 
+  const queryParams = new URLSearchParams(location.search);
+  const navFrom = queryParams.get("nav_from");
+  const navTo = queryParams.get("nav_to");
+
   return (
     <>
+      {navFrom && navTo && (
+        <div style={{
+          backgroundColor: "#ff9800",
+          color: "white",
+          textAlign: "center",
+          padding: "10px",
+          fontWeight: "bold",
+          fontSize: "14px",
+          position: "relative",
+          zIndex: 200,
+          boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
+        }}>
+          🗺️ Navigation Trace:
+          <span style={{ color: "#212529", backgroundColor: "#fff", padding: "2px 6px", borderRadius: "4px", margin: "0 8px" }}>
+            {navFrom === "home" ? "/" : navFrom.replace(/_/g, "/")}
+          </span>
+          ➡️ Just Landed On:
+          <span style={{ color: "#212529", backgroundColor: "#fff", padding: "2px 6px", borderRadius: "4px", margin: "0 8px" }}>
+            {navTo.toUpperCase()}
+          </span>
+          <button
+            onClick={() => navigate(location.pathname)}
+            style={{ marginLeft: "15px", cursor: "pointer", border: "1px solid white", background: "none", color: "white", borderRadius: "4px", padding: "2px 8px" }}
+          >
+            Clear Trace
+          </button>
+        </div>
+      )}
       {!isHeaderHidden && (
         <div
           className={`${styles.ctHeaderWrapper} fontBody ${isListingPage ? styles.listing : ""} ${transparent_header && isValidSection && !sticky_header

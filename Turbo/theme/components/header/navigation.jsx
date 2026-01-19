@@ -160,7 +160,6 @@ function Navigation({
     }
   };
 
-  console.log(navigationList, "navigationList");
 
   return (
     <div className={customClass}>
@@ -441,11 +440,9 @@ function Navigation({
               <ul key="l2_Nav">
                 <li
                   onClick={() => goBack("l1")}
-                  className={`${styles["sidebar__navigation--item"]} ${
-                    styles.title
-                  } ${styles.flexAlignCenter} ${styles.justifyStart} ${
-                    styles.fontBody
-                  } b1`}
+                  className={`${styles["sidebar__navigation--item"]} ${styles.title
+                    } ${styles.flexAlignCenter} ${styles.justifyStart} ${styles.fontBody
+                    } b1`}
                   style={{ display: sidebarl2Nav.title ? "flex" : "none" }}
                 >
                   <ArrowDownIcon
@@ -458,9 +455,8 @@ function Navigation({
                 {sidebarl2Nav.navigation.map((nav, index) => (
                   <li
                     key={index}
-                    className={`${styles["sidebar__navigation--item"]} ${
-                      styles.flexAlignCenter
-                    } ${styles.justifyBetween} ${styles.fontBody} h5`}
+                    className={`${styles["sidebar__navigation--item"]} ${styles.flexAlignCenter
+                      } ${styles.justifyBetween} ${styles.fontBody} h5`}
                   >
                     {convertActionToUrl(nav?.action) ? (
                       <FDKLink
@@ -527,11 +523,9 @@ function Navigation({
               <ul key="l3_Nav">
                 <li
                   onClick={() => goBack("l2")}
-                  className={`${styles["sidebar__navigation--item"]} ${
-                    styles.title
-                  } ${styles.flexAlignCenter} ${styles.justifyStart} ${
-                    styles.fontBody
-                  } b1`}
+                  className={`${styles["sidebar__navigation--item"]} ${styles.title
+                    } ${styles.flexAlignCenter} ${styles.justifyStart} ${styles.fontBody
+                    } b1`}
                   style={{ display: sidebarl3Nav.title ? "flex" : "none" }}
                 >
                   <ArrowDownIcon
@@ -548,9 +542,8 @@ function Navigation({
                 {sidebarl3Nav.navigation.map((nav, index) => (
                   <li
                     key={index}
-                    className={`${styles["sidebar__navigation--item"]} ${
-                      styles.flexAlignCenter
-                    } ${styles.justifyBetween} ${styles.fontBody} h5`}
+                    className={`${styles["sidebar__navigation--item"]} ${styles.flexAlignCenter
+                      } ${styles.justifyBetween} ${styles.fontBody} h5`}
                   >
                     {convertActionToUrl(nav?.action) ? (
                       <FDKLink
@@ -598,9 +591,8 @@ function Navigation({
             </button>
             <button
               type="button"
-              className={`${styles["sidebar__footer--item"]} ${
-                styles.wishlist
-              } ${styles.flexAlignCenter} ${styles.fontBody} h5`}
+              className={`${styles["sidebar__footer--item"]} ${styles.wishlist
+                } ${styles.flexAlignCenter} ${styles.fontBody} h5`}
               onClick={() => {
                 checkLogin("wishlist");
                 setShowSidebar(false);
